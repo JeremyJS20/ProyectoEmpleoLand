@@ -1,0 +1,194 @@
+<%- include("template/cabecera", {tituloWeb: 'Detalles del Empleo'}) %>
+
+
+<div class="container">
+  <div class="row bg-white justify-content-center p-3 mt-4 border rounded">
+    <div class="col-md-10 p-3 " style="padding-top: 30px; padding-bottom: 30px">
+      <div class="row mb-2 justify-content-center ">
+        <div class="col-md-12 text-center p-0">
+          <div class="h5 mr-3 font-weight-normal"><%= employData[0].Nombre %></div>
+        </div>
+        <div class="col-md-auto bg-primary text-white rounded mr-1 pl-1 pr-1 mb-1" style="height: 25px; width: auto">
+          <p class=""><%= employData[0].TipoTrabajo %></p>
+        </div>
+        <div class="col-md-auto bg-secondary text-white rounded mr-1 pl-1 pr-1 mb-1" style="height: 25px; width: auto">
+          <p class=""><%= employData[0].Tanda %></p>
+        </div>
+        <div class="col-md-auto bg-success text-white rounded pl-1 pr-1 mb-1" style="height: 25px; width: auto">
+          <p class=""><%= employData[0].Modalidad %></p>
+        </div>
+      </div>
+
+      <div class="row text-muted text-center justify-content-center">
+        <div class="col-md-12 p-0 text-dark">
+          <div class=""><%= employData[0].Categoria %></div>
+        </div>
+        <div class="col-md-12 p-0">
+          <div class=" text-muted"><i class="fal fa-building text-dark font-weight-bold"></i>
+            <%= employData[0].companyName %></div>
+        </div>
+
+        <div class="col-md-auto p-0 mr-2">
+          <i class="fal fa-map-marker-alt text-dark font-weight-bold"></i> <%= employData[0].Calle %>
+          , <%= employData[0].Dm %>, <%= employData[0].Municipio %> -
+          <%= employData[0].Provincia %>
+        </div>
+        <div class="col-md-auto p-0">
+          <i class="fal fa-clock text-dark font-weight-bold"></i> <%= employData[0].formatted_date %>
+        </div>
+        <div class="col-md-12 text-center">
+          <%if(req.isAuthenticated()){%>
+            <%if(req.user.userType === 'Company'){%>
+              <div class="col-md-12 text-center text-success">
+                <% if(solAmount.length != 0) {%>
+                  <button class="btn text-success" id="btnCandidate"><%= solAmount.length %> candidatos postulados</button>
+                  <%} else {%>
+                      Sin candidatos postulados
+                  <%}%>
+              </div>
+              <div class="col-md-12 text-center style="font-size: 15px;">
+                <a href="/myPostedEmploys/<%= Number(value) %>/<%= employData[0].IDTrabajo %>/editEmploy"
+                  class="text-primary mr-2"><i class="fal fa-edit"> </i> Editar empleo</a>
+                <a href="/myPostedEmploys/<%= Number(value) %>/<%= employData[0].IDTrabajo %>/deleteEmploy"
+                  class="text-danger ml-2"><i class="fal fa-trash-alt"> </i> Borrar empleo</a>
+              </div>
+            <%} else{%>
+              <div class="col-md-12 text-center text-success">
+                <% if(solAmount.length != 0) {%>
+                  <%= solAmount.length %> candidatos postulados
+                  <%} else {%>
+                      Sin candidatos postulados
+                    <%}%>
+              </div>
+              <%if(solAmount.length != 0){%>
+                <%for(let i=0; i < solAmount.length; i++){%>
+                  <%if(solAmount[i].IDCandidato === req.user.IDUsuario){%>
+                  <% if(solAmount[i].Estado === 'P'){ %>
+                    <div class="text-primary">Ya te has postulado</div>
+                  <%} else if(solAmount[i].Estado === 'S'){%>
+                  
+                  <%} else{%>
+                    
+                  <%}
+                    break;%>
+                  <%} else{%>
+                    <%if(i === (solAmount.length - 1)){%>
+                      <a href="<%= req.originalUrl %>/applyToEmploy" 
+                        class="text-primary mr-2"><i class="fal fa-check"></i></i> Postularse al empleo</a> 
+                    <%}%>
+                  <%}%>
+              <%}%>
+              <%} else{%>
+                <a href="<%= req.originalUrl %>/applyToEmploy" onclick="console.log('klk')"
+                  class="text-primary mr-2"><i class="fal fa-check"></i></i> Postularse al empleo</a> 
+              <%}%>
+            <%}%>
+          <%} else{%>
+            <div class="col-md-12 text-center text-success">
+              <% if(solAmount.length != 0) {%>
+                <%= solAmount.length %> candidatos postulados
+                <%} else {%>
+                    Sin candidatos postulados
+                  <%}%>
+            </div>
+            <a href='/signIn/RedirectTo=<%= req.originalUrl.replaceAll("/", "*") %>'>Inicia sesion para postularte</a>
+          <%}%>
+          </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row bg-white p-3 mt-4 border rounded">
+
+    <div class="col-md-12">
+      <h5 class="font-weight-normal mb-3">Descripcion del empleo</h5>
+    </div>
+
+    <div class="text-justify col-md-12 mb-4">
+      <p>
+        <%= employData[0].Descripcion%>
+      </p>
+
+      <div class="font-weight-bold">
+        <p>
+          Requisitos:
+        </p>
+      </div>
+      <p>
+        <%= employData[0].Requisitos%>
+      </p>
+      <div class="font-weight-bold">
+        <p>
+          Beneficios:
+        </p>
+      </div>
+      <p>
+        <%= employData[0].Beneficios%>
+      </p>
+    </div>
+  </div>
+
+  <%if(req.isAuthenticated() && req.user.userType === 'Candidate' || !req.isAuthenticated()){%>
+    <div class="row bg-white p-3 mt-4 mb-4 border rounded">
+      <div class="col-md-12">
+        <h5 class="font-weight-normal mb-3">Acerca de la empresa</h5>
+      </div>
+      <div class="text-justify col-md-12 mb-4">
+        <div class="row align-items-center">
+          <div class="col-2">
+            <img src="http://localhost:3000/IMG/CompanyProfileIMG/<%=employData[0].IDCompañia%>+Logo.jpg" alt="LogoCompany" style="width: 100%; height: auto;">
+          </div>
+          <a href="/companyProfile-CompanyID=<%=employData[0].IDCompañia%>" class="col-auto font-weight-bold text-decoration-none text-dark">
+            <%= employData[0].companyName %>
+          </a>
+        </div>
+      </div>
+    </div>
+  <%}%>
+
+</div>
+<div class="modal fade" id="modalCandidates" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Candidatos postulados</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+              <div class="row justify-content-center align-items-center">
+                <%solAmount.forEach(cand => {%>
+                  <div class="col-md-12 row mb-3">
+                    <div class="col-3">
+                      <img src="/IMG/profileM.png" style="width: 100%; height: auto;" alt="">
+                    </div>
+                    <div class="col-md-9">
+                      <div class="h6">
+                        <%=cand.Nombre%> <%=cand.Apellido%>
+                      </div>
+                      <div class="h6">
+                        <a href="/candidateProfile-CandidateID=<%= cand.IDCandidato %>" class="bg-white" style="font-size: 13px;">Ver perfil</a>
+                      </div>
+                    </div>
+                  </div>
+                <%})%>
+              </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<%- include("template/footer")%>
+
+<script>
+
+  const btnCandidate = document.getElementById('btnCandidate')
+
+  btnCandidate.addEventListener("click", () => {
+        $("#modalCandidates").modal("show")
+
+    })
+</script>

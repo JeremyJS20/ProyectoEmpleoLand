@@ -1,0 +1,22 @@
+<%- include("template/cabecera", {tituloWeb: 'Empleos'}) %>
+
+<div class="container mt-4 mb-4">
+
+  <div class="row" id="">
+    <% if(data.length === 0) { %>
+    <h3 class="text-muted text-center mb-5 mt-5"><%= noJobs %></h3>
+    <% } else{ %> <% for(let i = 0; i < data.length; i++){ %>
+
+      <div class="col-md-4">
+        <div class="card mb-0 border rounded bg-white text-dark">
+          <div class="card-body">
+            <a href="/employes/<%= categorie %>/<%=data[i].Provincia%>/1" class="card-text text-decoration-none text-dark"><%= data[i].Provincia %></a>
+            <div class="card-text text-muted"><%= data[i].amountEmploysByProvince  %> empleo/os publicados</div>
+          </div>
+        </div>
+      </div>
+    <% } %> <% } %>
+  </div>
+
+</div>
+<%- include("template/footer")%>

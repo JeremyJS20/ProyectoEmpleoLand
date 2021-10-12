@@ -1,0 +1,1031 @@
+<%- include("template/cabecera", {tituloWeb: 'Mi perfil'}) %>
+
+<div class="container p-0 mt-3 mb-3">
+    <div class="row m-0 ">
+        <div class="col-md-9 pt-2 pb-2 shadow">
+            <div class="bg-transparent pt-5 pb-5 text-white"
+                style="background-image: url(<%=Images.ProfileBackground%>); background-size: cover;">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 text-center">
+                        <img src="<%=Images.ProfilePhoto%>" class="rounded-circle" style="width:40%; height:auto"
+                            <%if(candidateData.Sexo === 'M'){%> alt="/IMG/profileM.png" <%} else{%>
+                            alt="/IMG/profileF.png" <%}%>
+                        >
+                        <%if(req.user != undefined && req.user.userType === 'Candidate'){%> <button
+                            class="btn btn-primary btn-circle " style="  position: absolute; top: 85%; left: 63%; transform: translate(-50%, -50%);
+                            -ms-transform: translate(-50%, -50%);cursor: pointer;" id="btnAddPhoto">
+                        <i class="fas fa-camera"></i>
+                        </button>
+                        <%}%>
+                    </div>
+                    <div class="col-md-12 text-center h2 font-weight-normal">
+                        <%= candidateData.Nombre %> <%= candidateData.Apellido %>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-0">
+                <div class="card">
+                    <div class="card-header">
+                        <%if(req.user != undefined && req.user.userType === 'Candidate'){%>
+                            <ul class="nav nav-pills card-header-pills justify-content-center">
+                                <li class="nav-item">
+                                    <a
+                                        class="nav-link <%if(req.params.tab === undefined || req.params.tab === 'aboutMe'){%> active <%}%>" href="/myProfile-CandidateID=<%= req.params.IDUser %>/aboutMe">Acerca
+                                        de mi</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a
+                                        class="nav-link <%if(req.params.tab === 'skillsAndLanguages'){%> active <%}%>" href="/myProfile-CandidateID=<%= req.params.IDUser %>/skillsAndLanguages">Habilidades
+                                        e idiomas</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a
+                                        class="nav-link <%if(req.params.tab === 'Education'){%> active <%}%>" href="/myProfile-CandidateID=<%= req.params.IDUser %>/Education">Educacion</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a
+                                        class="nav-link <%if(req.params.tab === 'complementaryEducation'){%> active <%}%>" href="/myProfile-CandidateID=<%= req.params.IDUser %>/complementaryEducation">Educacion
+                                        complementaria</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a
+                                        class="nav-link <%if(req.params.tab === 'laboralExperience'){%> active <%}%>" href="/myProfile-CandidateID=<%= req.params.IDUser %>/laboralExperience">Experiencia
+                                        laboral</a>
+                                </li>
+                            </ul>
+                        <%} else{%>
+                            <ul class="nav nav-pills card-header-pills justify-content-center">
+                                <li class="nav-item">
+                                    <a
+                                        class="nav-link <%if(req.params.tab === undefined || req.params.tab === 'aboutMe'){%> active <%}%>" href="/candidateProfile-CandidateID=<%= req.params.IDUser %>/aboutMe">Acerca
+                                        de mi</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a
+                                        class="nav-link <%if(req.params.tab === 'skillsAndLanguages'){%> active <%}%>" href="/candidateProfile-CandidateID=<%= req.params.IDUser %>/skillsAndLanguages">Habilidades
+                                        e idiomas</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a
+                                        class="nav-link <%if(req.params.tab === 'Education'){%> active <%}%>" href="/candidateProfile-CandidateID=<%= req.params.IDUser %>/Education">Educacion</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a
+                                        class="nav-link <%if(req.params.tab === 'complementaryEducation'){%> active <%}%>" href="/candidateProfile-CandidateID=<%= req.params.IDUser %>/complementaryEducation">Educacion
+                                        complementaria</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a
+                                        class="nav-link <%if(req.params.tab === 'laboralExperience'){%> active <%}%>" href="/candidateProfile-CandidateID=<%= req.params.IDUser %>/laboralExperience">Experiencia
+                                        laboral</a>
+                                </li>
+                            </ul>
+                        <%}%>
+                        </div>
+                    <div class="card-body">
+                        <%if(req.params.tab === undefined || req.params.tab === 'aboutMe'){%>
+                        <div class="row g-3 justify-content-between">
+                            <div class="col-md-12">
+                                <%if(candidateData.Presentacion === "" || candidateData.Presentacion === null){%>
+                                <%if(req.user != undefined && req.user.userType === 'Candidate'){%>
+                                <div class="text-center">
+                                    <img width="100" height="100" src="data:image/svg+xml;base64,PHN2ZyBpZD0iQ2FwYV8xIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHdpZHRoPSI1MTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGc+PHBhdGggZD0ibTUwMy40MzcgNDIxLjY2N2gtMzAxLjU5NmMtLjU4NyAwLTEuMDYzLS40NzYtMS4wNjMtMS4wNjN2LTQxMi4wNDFjMC0uNTg3LjQ3Ni0xLjA2MyAxLjA2My0xLjA2M2gzMDEuNTk2Yy41ODcgMCAxLjA2My40NzYgMS4wNjMgMS4wNjN2NDEyLjA0MWMwIC41ODctLjQ3NiAxLjA2My0xLjA2MyAxLjA2M3oiIGZpbGw9IiNmZDdlNDIiLz48cGF0aCBkPSJtNDc1LjgwMyAzOTQuMDU1aC0yNDYuMzI4Yy0uNiAwLTEuMDg2LS40ODYtMS4wODYtMS4wODZ2LTM1Ni43NzJjMC0uNi40ODYtMS4wODYgMS4wODYtMS4wODZoMjQ2LjMyN2MuNiAwIDEuMDg2LjQ4NiAxLjA4NiAxLjA4NnYzNTYuNzcxYy4wMDEuNjAxLS40ODUgMS4wODctMS4wODUgMS4wODd6IiBmaWxsPSIjYzFlMmZmIi8+PHBhdGggZD0ibTQ3NS44MDIgMzUuMTExaC0zOC45MTV2MzA0Ljg1NGMwIDE4LjgyNy0xNS4yNjIgMzQuMDktMzQuMDkgMzQuMDloLTE3NC40MDh2MTguOTE0YzAgLjYuNDg2IDEuMDg2IDEuMDg2IDEuMDg2aDI0Ni4zMjdjLjYgMCAxLjA4Ny0uNDg2IDEuMDg3LTEuMDg2di0zNTYuNzcyYzAtLjYtLjQ4Ni0xLjA4Ni0xLjA4Ny0xLjA4NnoiIGZpbGw9IiNiM2Q4ZmIiLz48cGF0aCBkPSJtNDE4LjMwMyAzMTcuMjc3LTEuMjM3LS4zMDljLTEzLjUyNi0zLjM4MS0yMy4wMTUtMTUuNTM1LTIzLjAxNS0yOS40Nzd2LTE2LjcxNGMtMTEuODA5IDguMTA0LTI2LjA5MSAwLTQxLjQxOCAwLTE1LjMyNyAwLTI5LjYwOSA4LjEwNC00MS40MTggMHYxNi43MTRjMCAxMy45NDItOS40ODkgMjYuMDk2LTIzLjAxNSAyOS40NzdsLTEuMjI3LjMwN2MxNS4xNDUgMTMuMTExIDM4LjkyNiAzMi4xOSA2NS42NjcgMzIuMTkgMjYuNzM4IDAgNTAuNTE4LTE5LjA3OCA2NS42NjMtMzIuMTg4eiIgZmlsbD0iI2ZmZTRjMCIvPjxwYXRoIGQ9Im00NzYuODg5IDMzNC4xNTljLTQuNDE1LTIuNTYyLTkuMjQtNC41NDUtMTQuMzg2LTUuODMybC00NC4yLTExLjA1Yy0xNS4xNDUgMTMuMTA5LTM4LjkyNSAyMS41NTYtNjUuNjY0IDIxLjU1Ni0yNi43NDEgMC01MC41MjItOC40NDgtNjUuNjY3LTIxLjU1OGwtNDQuMjA5IDExLjA1MmMtNS4xNDEgMS4yODUtOS45NjIgMy4yNjYtMTQuMzc0IDUuODI0djU4LjgxN2MwIC42LjQ4NiAxLjA4NiAxLjA4NyAxLjA4NmgyNDYuMzI3Yy42IDAgMS4wODYtLjQ4NiAxLjA4Ni0xLjA4NnoiIGZpbGw9IiM0ZjY2Y2UiLz48cGF0aCBkPSJtNDM2Ljg4NyAzMjEuOTIzdjE4LjA0MmMwIDE4LjgyNy0xNS4yNjIgMzQuMDktMzQuMDkgMzQuMDloLTE3NC40MDh2MTguOTE0YzAgLjA1Ni4wMDQuMTEyLjAxMy4xNjYuMDQ0LjI4OC4yMDEuNTM4LjQyNC43MDUuMDE0LjAxLjAyOC4wMjEuMDQzLjAzLjE3My4xMTcuMzgyLjE4Ni42MDguMTg2aDI0Ni4zMjdjLjIyNSAwIC40MzQtLjA2OC42MDgtLjE4Ni4wMTQtLjAxLjAyOS0uMDIuMDQzLS4wMy4xMi0uMDg5LjIyLS4yMDMuMjk0LS4zMzMuMDA4LS4wMTQuMDE2LS4wMjguMDIzLS4wNDIuMDUyLS4xMDIuMDg5LS4yMTMuMTA3LS4zMy4wMDgtLjA1NC4wMTMtLjEwOS4wMTMtLjE2NnYtNTguODFjLTQuNDE1LTIuNTYyLTkuMjQtNC41NDUtMTQuMzg2LTUuODMyeiIgZmlsbD0iIzMwNGVjNyIvPjxwYXRoIGQ9Im0yNzUuOTYyIDE1OS4zNDdoLTE1LjE1M2MtMTAuMjg3IDAtMTguNjI2IDguMzM5LTE4LjYyNiAxOC42MjYgMCAyMC4yMTMgMTYuMzg2IDM2LjU5OSAzNi41OTkgMzYuNTk5aC43MDN6IiBmaWxsPSIjZmZlNGMwIi8+PHBhdGggZD0ibTQ0NC40NTYgMTU5LjM0N2gtMTUuMTUzbC0zLjUyNCA1NS4yMjRoLjcwM2MyMC4yMTMgMCAzNi41OTktMTYuMzg2IDM2LjU5OS0zNi41OTkuMDAxLTEwLjI4Ni04LjMzOC0xOC42MjUtMTguNjI1LTE4LjYyNXoiIGZpbGw9IiNmZmU0YzAiLz48cGF0aCBkPSJtNDQ0LjQ1NiAxNTkuMzQ3aC03LjU2OXY1My43MjRjMTUuMTQ1LTQuNDgyIDI2LjE5NC0xOC41IDI2LjE5NC0zNS4wOTguMDAxLTEwLjI4Ny04LjMzOC0xOC42MjYtMTguNjI1LTE4LjYyNnoiIGZpbGw9IiNmY2QwYTMiLz48cGF0aCBkPSJtMjE2LjAxMiAzMTMuODI3Yy05LjI0LTUuMzE4LTE1LjIyNi0xNS4yNjMtMTUuMjI2LTI2LjMzNnYtNy44MzRjMC01LjM0OSAyLjQxMy0xMC4zNjcgNi40NjEtMTMuODYzIDE0LjQwNC0xMi40NCAyMy45NDEtMzAuNDI2IDI1LjI0LTUwLjc5NS4wMTUtLjI0LjIxNS0uNDI4LjQ1Ni0uNDI4aC4yNzVjMjAuMjEzIDAgMzYuNTk5LTE2LjM4NiAzNi41OTktMzYuNTk5IDAtMTAuMjg3LTguMzM5LTE4LjYyNi0xOC42MjYtMTguNjI2aC0xNC42NjZjLS4xMjYgMC0uMjQ3LS4wNTItLjMzMy0uMTQ0cy0uMTMxLS4yMTYtLjEyMy0uMzQybC44NjEtMTMuNDg4YzIuODU3LTQ0Ljc3OS0zMi42OTItODIuNjY4LTc3LjU2Mi04Mi42NjgtNDQuODcgMC04MC40MTkgMzcuODg5LTc3LjU2MiA4Mi42NjhsLjg2MSAxMy40ODljLjAwOC4xMjYtLjAzNi4yNS0uMTIzLjM0Mi0uMDg2LjA5Mi0uMjA3LjE0NC0uMzMzLjE0NGgtMTQuNjY3Yy0xMC4yODcgMC0xOC42MjYgOC4zMzktMTguNjI2IDE4LjYyNiAwIDIwLjIxMyAxNi4zODYgMzYuNTk5IDM2LjU5OSAzNi41OTloLjI3NWMuMjQxIDAgLjQ0LjE4Ny40NTYuNDI4IDEuMyAyMC4zNjkgMTAuODM3IDM4LjM1NSAyNS4yNCA1MC43OTUgNC4wNDggMy40OTYgNi40NjEgOC41MTQgNi40NjEgMTMuODYzdjcuODM0YzAgMTEuMDc2LTUuOTg4IDIxLjAyMi0xNS4yMzIgMjYuMzM5IDE0LjgxNCA2Ljk0NSAzNC43MzUgMzAuOTc2IDU2LjY0NCAzMC45NzYgMjEuOTEyLS4wMDEgNDEuODM3LTI0LjAzNCA1Ni42NTEtMzAuOTh6IiBmaWxsPSIjZmZmMGRjIi8+PHBhdGggZD0ibTIxNC4wNTQgMjM4LjAyOWMxMS4zNTItOS40NTggMTguMzY0LTIzLjEzMiAxOS40LTM3Ljg3MiAxLjYzMi0yMy4yMDggMy40OC01NC44NiAzLjQ3NS01NC43ODQgMi44NTctNDQuNzc5LTMyLjY5Mi04Mi42NjgtNzcuNTYyLTgyLjY2OC00NC44NzEgMC04MC40MTkgMzcuODk1LTc3LjU2MiA4Mi42NzUgMS42OTggMjYuNjE2IDIuNzU1IDQzLjUgMy40NTIgNTQuNDI2Ljk0OSAxNC44NzMgNy45NzIgMjguNjk1IDE5LjQyMiAzOC4yMzYgMzEuNjczIDI2LjM5MyA3Ny42NzkgMjYuMzk1IDEwOS4zNTQuMDA0eiIgZmlsbD0iIzU1Nzk4MSIvPjxwYXRoIGQ9Im0xNzIuNjM2IDYzLjgzYzE2LjIxNyAxNS4yNzggMjUuODMxIDM3LjQwOSAyNC4yOTIgNjEuNTQyLjAwNS0uMDc2LTEuODQzIDMxLjU3Ny0zLjQ3NSA1NC43ODQtMS4wMzYgMTQuNzM5LTguMDQ4IDI4LjQxNC0xOS40IDM3Ljg3MmwtLjAyLjAxN2MtMjAuNDI5IDE3LjAyMS00Ni44MTkgMjMuMDYzLTcxLjQ4IDE4LjEyOC42OTEuNjQgMS40MDEgMS4yNjMgMi4xMjggMS44NjkgMzEuNjczIDI2LjM5MyA3Ny42NzkgMjYuMzk1IDEwOS4zNTQuMDA0bC4wMi0uMDE3YzExLjM1Mi05LjQ1OCAxOC4zNjQtMjMuMTMyIDE5LjQtMzcuODcyIDEuNjMyLTIzLjIwOCAzLjQ4LTU0Ljg2IDMuNDc1LTU0Ljc4NCAyLjU2OC00MC4yNjEtMjUuOTA5LTc0Ljk1Mi02NC4yOTQtODEuNTQzeiIgZmlsbD0iIzNjNTk1OSIvPjxwYXRoIGQ9Im0zMDMuMDk1IDE1OS4zNjFjNC40ODkgMCA4LjEyOC0zLjYzOSA4LjEyOC04LjEyOHYtMTYuMDc5YzAtOC40NjcgOC4yOTUtMTQuNDQ1IDE2LjMyNy0xMS43NjhsMTEuMTE3IDMuNzA2YzkuMDcgMy4wMjMgMTguODc2IDMuMDIzIDI3Ljk0NiAwbDExLjExNy0zLjcwNmM4LjAzMi0yLjY3NyAxNi4zMjcgMy4zMDEgMTYuMzI3IDExLjc2OHYxNi4wNzljMCA0LjQ4OSAzLjYzOSA4LjEyOCA4LjEyOCA4LjEyOCAzLjQ4IDAgNi42NjEgMS45NjYgOC4yMTcgNS4wNzhsMTYuNDc2IDMyLjk1MSAzLjMxOS01Mi4wMThjMi44NTctNDQuNzc5LTMyLjY5Mi04Mi42NjgtNzcuNTYyLTgyLjY2OC00NC44NyAwLTgwLjQxOSAzNy44ODktNzcuNTYyIDgyLjY2OGwzLjMyIDUyLjAzOSAxNi40ODYtMzIuOTczYzEuNTU1LTMuMTExIDQuNzM2LTUuMDc3IDguMjE2LTUuMDc3eiIgZmlsbD0iIzU1Nzk4MSIvPjxwYXRoIGQ9Im00MTAuNCAxNjQuNDM5Yy0xLjU1Ni0zLjExMi00LjczNy01LjA3OC04LjIxNy01LjA3OC00LjQ4OSAwLTguMTI4LTMuNjM5LTguMTI4LTguMTI4di0xNi4wNzljMC04LjQ2Ny04LjI5NS0xNC40NDUtMTYuMzI3LTExLjc2OGwtMTEuMTE3IDMuNzA2Yy05LjA3IDMuMDIzLTE4Ljg3NiAzLjAyMy0yNy45NDYgMGwtMTEuMTE3LTMuNzA2Yy04LjAzMi0yLjY3Ny0xNi4zMjcgMy4zMDEtMTYuMzI3IDExLjc2OHYxNi4wNzljMCA0LjQ4OS0zLjYzOSA4LjEyOC04LjEyOCA4LjEyOC0zLjQ4IDAtNi42NjEgMS45NjYtOC4yMTcgNS4wNzhsLTE2LjQ4NiAzMi45NzMgMS4xMjIgMTcuNTg3YzIuNDYxIDM4LjU3NSAzNC40NjYgNjguNjAzIDczLjEyIDY4LjYwMyAzOC42NTQgMCA3MC42NTgtMzAuMDI4IDczLjEyLTY4LjYwM2wxLjEyNC0xNy42MDh6IiBmaWxsPSIjZmZmMGRjIi8+PHBhdGggZD0ibTI2OS4yMzcgMzI4LjMyNy00NS40MzYtMTEuMzU5Yy0yLjc4My0uNjk2LTUuMzk1LTEuNzYzLTcuNzg5LTMuMTQxLTE0LjgxNCA2Ljk0Ni0zNC43MzkgMTEuMjAxLTU2LjY1MSAxMS4yMDEtMjEuOTA5IDAtNDEuODMtNC4yNTMtNTYuNjQ0LTExLjE5Ny0yLjM5MiAxLjM3Ni01LjAwMyAyLjQ0My03Ljc4NCAzLjEzOGwtNDUuNDM3IDExLjM1OWMtMjQuNjgxIDYuMTctNDEuOTk2IDI4LjM0Ni00MS45OTYgNTMuNzg4djEyMS4xOTRjMCAuNjU3LjUzMyAxLjE5IDEuMTkgMS4xOWgzMDEuMzU0Yy42NTcgMCAxLjE5LS41MzMgMS4xOS0xLjE5di0xMjEuMTk0Yy4wMDEtMjUuNDQxLTE3LjMxNS00Ny42MTgtNDEuOTk3LTUzLjc4OXoiIGZpbGw9IiM0ZjY2Y2UiLz48cGF0aCBkPSJtMjY5LjIzNyAzMjguMzI3LTI1LjEyNy02LjI4MmMxMC42NTggMTAuMjAxIDE3LjEyMiAyNC41MjYgMTcuMTIyIDQwLjA3djY1LjYyNmMwIDMxLjM0Ni0yNS40MTEgNTYuNzU3LTU2Ljc1NyA1Ni43NTdoLTE5Ni45NzV2MTguODExYzAgLjY1Ny41MzMgMS4xOSAxLjE5IDEuMTloMzAxLjM1NGMuNjU3IDAgMS4xOS0uNTMzIDEuMTktMS4xOXYtMTIxLjE5M2MuMDAxLTI1LjQ0MS0xNy4zMTUtNDcuNjE4LTQxLjk5Ny01My43ODl6IiBmaWxsPSIjMzA0ZWM3Ii8+PHBhdGggZD0ibTM1Mi4wMzYgMTg3LjMwM3YxNS42NjVjMCAyLjQ1Mi0xLjk5NSA0LjQ0Ny00LjQ0NyA0LjQ0N2gtMS44NTljLTQuMTQyIDAtNy41IDMuMzU4LTcuNSA3LjVzMy4zNTggNy41IDcuNSA3LjVoMS44NTljMTAuNzIzIDAgMTkuNDQ3LTguNzI0IDE5LjQ0Ny0xOS40NDd2LTE1LjY2NWMwLTQuMTQyLTMuMzU4LTcuNS03LjUtNy41cy03LjUgMy4zNTgtNy41IDcuNXoiLz48cGF0aCBkPSJtMTM4LjQyMiAyODAuOTYxYy0uNzY0IDQuMDcxIDEuOTE3IDcuOTkxIDUuOTg4IDguNzU1IDkuODM4IDEuODQ2IDIwLjA0OSAxLjg0OSAyOS45MDEuMDAyIDQuMDcxLS43NjMgNi43NTMtNC42ODIgNS45OS04Ljc1M3MtNC42NzktNi43NTMtOC43NTMtNS45OWMtNy45ODggMS40OTYtMTYuMzkyIDEuNDk1LTI0LjM3Mi0uMDAyLTQuMDctLjc2Mi03Ljk5IDEuOTE3LTguNzU0IDUuOTg4eiIvPjxwYXRoIGQ9Im0zMjkuNzc4IDIzNi4zOWMtMy4yMDYtMi42MjMtNy45My0yLjE1MS0xMC41NTQgMS4wNTQtMi42MjMgMy4yMDYtMi4xNTEgNy45MzEgMS4wNTQgMTAuNTU0IDkuNDU3IDcuNzM5IDIwLjY0NiAxMS44MjkgMzIuMzYxIDExLjgyOXMyMi45MDUtNC4wOSAzMi4zNjEtMTEuODI5YzMuMjA2LTIuNjI0IDMuNjc3LTcuMzQ5IDEuMDU0LTEwLjU1NC0yLjYyNC0zLjIwNi03LjM0OS0zLjY3OC0xMC41NTQtMS4wNTQtNi43NDUgNS41Mi0xNC42NSA4LjQzOC0yMi44NjEgOC40MzhzLTE2LjExNy0yLjkxOC0yMi44NjEtOC40Mzh6Ii8+PHBhdGggZD0ibTUwMy40MzcgMGgtMzAxLjU5NmMtNC43MjIgMC04LjU2MyAzLjg0MS04LjU2MyA4LjU2MnY1My41OThjLTEwLjUzMy00LjU2NC0yMi4wMDYtNi45NTYtMzMuOTExLTYuOTU2LTIzLjc5NSAwLTQ1Ljg2NyA5LjU1Ny02Mi4xNDggMjYuOTEtMTYuMjgxIDE3LjM1NC0yNC40MTQgMzkuOTg5LTIyLjg5OSA2My43MzYuMTEyIDEuNzU3LjI0NyAzLjg3LjM4MiA1Ljk5N2gtNy4xNTljLTE0LjQwNiAwLTI2LjEyNSAxMS43Mi0yNi4xMjUgMjYuMTI2IDAgMjIuMjM3IDE2LjU0NSA0MC42ODIgMzcuOTcxIDQzLjY3NCAyLjcwNiAxOS4zNzYgMTIuMjIxIDM2Ljg4OSAyNy4xOTYgNDkuODIyIDIuNDU2IDIuMTIxIDMuODY0IDUuMTA1IDMuODY0IDguMTg4djcuODM0YzAgMTAuMzg5LTcuMDYxIDE5LjYzMi0xNy4zMzQgMjIuMjAxbC00NS40MzcgMTEuMzU5Yy0yOC4wNzIgNy4wMTktNDcuNjc4IDMyLjEyOS00Ny42NzggNjEuMDY1djEyMS4xOTRjMCA0Ljc5MiAzLjg5OCA4LjY5IDguNjkgOC42OWgzMDEuMzU0YzQuNzkyIDAgOC42OS0zLjg5OCA4LjY5LTguNjl2LTc0LjE0M2g3NS4zMjhjNC4xNDIgMCA3LjUtMy4zNTggNy41LTcuNXMtMy4zNTgtNy41LTcuNS03LjVoLTc1LjMyOHYtMTIuNjExaDE1Ny4wNjhjNC43MzQgMCA4LjU4Ni0zLjg1MiA4LjU4Ni04LjU4NiAwLTc5LjM0NyAwLTI3Ny4zNjggMC0zNTYuNzcxIDAtNC43MzQtMy44NTItOC41ODYtOC41ODYtOC41ODZoLTg1LjE5OGMtNC4xNDIgMC03LjUgMy4zNTgtNy41IDcuNXMzLjM1OCA3LjUgNy41IDcuNWg3OC43ODV2MTI3LjU1Yy0zLjMyOS0xMC42MDItMTMuMjQ3LTE4LjMxNC0yNC45MzMtMTguMzE0aC03LjE1OWwuMzgzLTUuOTk3YzEuMTE5LTE3LjUzNC0zLjAyMi0zNC40NjEtMTEuODE5LTQ5LjEwNGwyOC43MjEtMjguNzIxYzIuOTI5LTIuOTI5IDIuOTI5LTcuNjc4IDAtMTAuNjA2LTIuOTI5LTIuOTI5LTcuNjc4LTIuOTI5LTEwLjYwNiAwbC0yNy4wNTcgMjcuMDU3Yy0zLjA3Ny0zLjUyNy02LjQ5NS02Ljg4LTEwLjIzNy05Ljk2N2w2LjQ4NC02LjQ4NGMyLjkyOS0yLjkyOSAyLjkyOS03LjY3OCAwLTEwLjYwNi0yLjkyOS0yLjkyOS03LjY3OC0yLjkyOS0xMC42MDYgMGwtOC40NzIgOC40NzJjLTEyLjQ5Ni02Ljk4Mi0yNi42NDEtMTAuNjg2LTQxLjQ1NC0xMC42ODYtMjMuNzk1IDAtNDUuODY3IDkuNTU3LTYyLjE0OCAyNi45MS0xNi4yODIgMTcuMzU0LTI0LjQxNCAzOS45ODktMjIuODk5IDYzLjczNmwuMzgzIDUuOTk3aC03LjE1OWMtMS42MTggMC0zLjIyOC4xNS00LjgwOS40NDQtMS41Ni0uMjkyLTMuMTY3LS40NDQtNC44MS0uNDQ0aC03LjEzMmMuMDkxLTEuNTMuMzM4LTUuNzE3LjM1NS01Ljk5Ny45NjgtMTUuMTc3LTIuMDA0LTI5Ljg5OS04LjUyNS00My4wNzh2LTYwLjE2NGgxMTkuNzE0YzQuMTQyIDAgNy41LTMuMzU4IDcuNS03LjVzLTMuMzU4LTcuNS03LjUtNy41aC0xMjYuMTI4Yy00LjczNCAwLTguNTg2IDMuODUyLTguNTg2IDguNTg2djQ1LjI1N2MtMy44OTktNC4wNzEtOC4xMjEtNy43MDItMTIuNjExLTEwLjg2OXYtNTUuNTg1aDI4OC43MjF2Mzk5LjE2N2gtNjcuOTM3Yy00LjE0MiAwLTcuNSAzLjM1OC03LjUgNy41czMuMzU4IDcuNSA3LjUgNy41aDc0LjM3NGM0LjcyMiAwIDguNTYzLTMuODQxIDguNTYzLTguNTYzdi00MTIuMDQxYzAtNC43MjEtMy44NDEtOC41NjMtOC41NjMtOC41NjN6bS00NDcuMDE5IDE3Ny45NzNjMC02LjEzNSA0Ljk5MS0xMS4xMjYgMTEuMTI1LTExLjEyNmg4LjExMmMuMTAzIDEuNjI0IDEuMTUyIDE4LjIwOSAyLjExNyAzMy40MzcuMTI3IDEuOTg4LjM1MSAzLjk2My42NjkgNS45MTctMTIuNjM2LTMuMTY4LTIyLjAyMy0xNC42MjItMjIuMDIzLTI4LjIyOHptMjQ3LjMxNiAzMTkuMDI3aC00MC4yMjR2LTc1LjMzNmMwLTQuMTQyLTMuMzU4LTcuNS03LjUtNy41LTQuMjEzIDAtNy41MiAzLjQwMS03LjUyIDcuNXY3NS4zMzZoLTE3OC4yNjV2LTc1LjMzNmMwLTQuMTQyLTMuMzU4LTcuNS03LjUtNy41cy03LjUgMy4zNTgtNy41IDcuNXY3NS4zMzZoLTQwLjIyNXYtMTE0Ljg4NGMwLTIyLjA0IDE0LjkzNC00MS4xNjcgMzYuMzE2LTQ2LjUxM2w0NS40MzctMTEuMzU5YzIuMTE1LS41MjkgNC4xNzctMS4yMzcgNi4xNjItMi4xMTYgMzIuNjM5IDEzLjgyNiA4MC4wNjcgMTMuOTA4IDExMi44OTgtLjAwMyAxLjk4Ny44OCA0LjA1IDEuNTkgNi4xNjkgMi4xMTktLjE0MS0uMDM1IDQ1LjMwNCAxMS4zMjYgNDUuNDM2IDExLjM1OSAyMS4yNTMgNS4zMTQgMzYuMzE2IDI0LjM1NiAzNi4zMTYgNDYuNTE0em01Ny40MDctMzQ2LjE0MWMyLjkyOSAyLjkyOSA3LjY3OCAyLjkyOSAxMC42MDYgMGwxNC44MDgtMTQuODA4djE1LjE4M2MwIDguNjE3IDcuMDExIDE1LjYyOCAxNS42MjggMTUuNjI4LjY0MyAwIDEuMjIxLjM1NyAxLjUwOS45MzJsMTUuNTcgMzEuMTQxLS45OTUgMTUuNTg4Yy0yLjIwMyAzNC41MzEtMzEuMDMzIDYxLjU4MS02NS42MzUgNjEuNTgxLTI4LjQ3NSAwLTUzLjA0Mi0xOC4zMTktNjIuMDc2LTQ0LjA1MmwxMi4xNjQtMTIuMTY0YzIuOTI5LTIuOTI5IDIuOTI5LTcuNjc4IDAtMTAuNjA2LTIuOTI5LTIuOTMtNy42NzgtMi45MjktMTAuNjA2IDBsLTUuMTIzIDUuMTIzLS45ODYtMTUuNDQ4IDE1LjU4MS0zMS4xNjJjLjI4OC0uNTc1Ljg2Ni0uOTMyIDEuNTA5LS45MzIgOC42MTcgMCAxNS42MjctNy4wMTEgMTUuNjI3LTE1LjYyOHYtMTYuMDc5YzAtMS41OTUuNzQyLTMuMDQ1IDIuMDM3LTMuOTc5IDEuMjkzLS45MzMgMi45MDMtMS4xOCA0LjQxOC0uNjc0bDExLjExNyAzLjcwNmM5LjY4NyAzLjIyOSAyMC4yNzYgMy40OSAzMC4xMDguNzg0bC01LjI2MSA1LjI2Yy0yLjkyOSAyLjkyOC0yLjkyOSA3LjY3NyAwIDEwLjYwNnptNDEuOTk0IDE2Ny45NzZjLTEzLjc5IDcuOTQ1LTMxLjgxNSAxMi40OTgtNTAuNDk2IDEyLjQ5OC0xOC42ODQgMC0zNi43MTMtNC41NTUtNTAuNTAzLTEyLjUwMiAxMC4xNTYtNi44OTQgMTYuNTc5LTE4LjQ5IDE2LjU3OS0zMS4zNHYtMy44ODRjMjEuNDc3IDkuOTk1IDQ2LjM0NyAxMCA2Ny44MzYgMHYzLjg4NGMwIDEyLjg1MyA2LjQyNyAyNC40NTEgMTYuNTg0IDMxLjM0NHptLTExNi43NTYtOS4xNDNjLTQuNjI1IDEuMTU3LTI2Ljc0NCA2LjY4Ni0zMC4zNzkgNy41OTVsLTIwLjExMS01LjAyOHYtNzUuOTU3YzEuNTk1LTQuNzI5IDIuNzU1LTkuNjMgMy40NTctMTQuNjU2IDYuMDItLjg0MSAxMS42NTUtMi45MDIgMTYuNjQ2LTUuOTI0IDUuMDkxIDMuMDY4IDEwLjc3NyA1LjA4NSAxNi42NjcgNS45MTcuMjg2IDIuMDMuNjQ4IDQuMDM1IDEuMDgyIDYuMDEybC0yMy4wNDQgMjMuMDQ0Yy0yLjkyOSAyLjkyOS0yLjkyOSA3LjY3OCAwIDEwLjYwNiAyLjkyOCAyLjkyOSA3LjY3NyAyLjkyOSAxMC42MDYgMGwxNy43MzItMTcuNzMyYzIuMDU2IDQuNTMgNC41MTYgOC44MzUgNy4zMzQgMTIuODY5bC0zNS42NzYgMzUuNjc1Yy0yLjkyOSAyLjkyOS0yLjkyOSA3LjY3OCAwIDEwLjYwNiAyLjkyOCAyLjkyOSA3LjY3NyAyLjkyOSAxMC42MDYgMGwzNC43OTMtMzQuNzkzYzIuNCAyLjM1NSA0Ljk0NiA0LjU2MSA3LjYyMSA2LjYwNHYxMi45NThjLjAwMiAxMC41MjMtNy4xMjYgMTkuNjUyLTE3LjMzNCAyMi4yMDR6bS0xNS4zMDItMTA5LjEyNi4zNTYgNS41NzljLTEuMTYyLS4zMDEtMi4zMDEtLjY3NC0zLjQxNC0xLjExNyAxLjEwNy0xLjQyMSAyLjEyOS0yLjkxMSAzLjA1OC00LjQ2MnptLTE5Ljg4Ny0zMy43MTljNi4xMzUgMCAxMS4xMjYgNC45OTEgMTEuMTI2IDExLjEyNiAwIDEzLjYwNS05LjM4NiAyNS4wNi0yMi4wMjQgMjguMjI4LjI5Ny0xLjgyNC41MTItMy42NjUuNjQzLTUuNTE4Ljc4LTExLjA5NyAxLjYwOS0yNC4xMzYgMi4yMTEtMzMuODM2em0tMzAuMzAxIDk1Ljg0N3Y0NS4yNDRjLTcuNzItMy44NzgtMTIuNjA0LTExLjgzNC0xMi42MDQtMjAuNDQ3di03LjgzNGMwLTMuMDgzIDEuNDA4LTYuMDY3IDMuODYzLTguMTg3IDMuMTYyLTIuNzMgNi4wNzktNS42NjQgOC43NDEtOC43NzZ6bTk3Ljg0NSAxMjMuODYxdi00LjQzOWMwLTQuMzYzLS40NDYtOC42MzktMS4zLTEyLjc3OSAzMC42MjIgNy4xNTkgNjUuMjI0IDQuNzk4IDk0LjI3Ny03Ljg2MiAzLjc5Ny0xLjY1NCA1LjUzNC02LjA3NCAzLjg3OS05Ljg3Mi0xLjY1NC0zLjc5Ny02LjA3Mi01LjUzNC05Ljg3Mi0zLjg3OS0yNy40NDcgMTEuOTU5LTYxLjI1MSAxMy44NDItOTAuNzUgNS40ODktMS4yODYtLjM2NC0yLjU3My0uNzUyLTMuODUxLTEuMTU3LTYuMDk4LTExLjIyOS0xNS41NTEtMjAuNDY5LTI3LjIzMy0yNi4yNzlsMS4yNDgtLjMxMmMzNS43NTIgMjcuODMyIDk5LjI2NSAyNy44MjQgMTM1LjAwNy4wMDJsNDAuNTQyIDEwLjEzNWMzLjAwMy43NTEgNS45MTcgMS43ODYgOC43MDYgMy4wOXY0Ny44NjJoLTE1MC42NTN6bTE1MC42NTUtMTk4LjM3N3YxMzQuMzY3Yy0xLjY2NS0uNTY4LTMuMzU1LTEuMDY3LTUuMDY3LTEuNDk1LTEuOTc3LS40OTQtNDMuMzczLTEwLjg0Mi00NS40MzctMTEuMzU5LTEwLjIwNi0yLjU1Mi0xNy4zMzQtMTEuNjgxLTE3LjMzNC0yMi4yMDF2LTEyLjk1OGMxNi40NTctMTIuNTY4IDI4LjAxLTMxLjMyNCAzMS4wNTUtNTIuODg1IDE4LjA0NS0yLjUxNyAzMi42MjctMTUuOTk1IDM2Ljc4My0zMy40Njl6bS0yNC45MzMtMjEuMzMxYzYuMTM1IDAgMTEuMTI2IDQuOTkxIDExLjEyNiAxMS4xMjYgMCAxMy41MDctOS4yNSAyNC44OTMtMjEuNzQ4IDI4LjE1OC44OTQtMTQuMDE3IDEuNTIyLTIzLjg0OCAyLjUwNi0zOS4yODR6bS0yMS43NDYtMjEuOTUyLTEuNTUgMjQuMjkzLTQuMDUyLTguMTAzYy0yLjg0NS01LjY5LTguNTYzLTkuMjI0LTE0LjkyNS05LjIyNC0uMzQ2IDAtLjYyOC0uMjgyLS42MjgtLjYyOHYtMTYuMDc5YzAtMy45MDEtMS4xNTUtNy42NzMtMy4yMzYtMTAuODY4bDE2LjUyNy0xNi41MjdjNS45NTcgMTEuMjcyIDguNzAyIDIzLjk5OCA3Ljg2NCAzNy4xMzZ6bS0xMjEuMjg2LTUyLjUxN2MxMy40MTYtMTQuMjk5IDMxLjYwMi0yMi4xNzQgNTEuMjA5LTIyLjE3NCAxMC43MTQgMCAyMS4wMDQgMi4zNTEgMzAuMzIyIDYuODE3bC0xNC45MTEgMTQuOTExYy0yLjkyOSAyLjkyOS0yLjkyOSA3LjY3OCAwIDEwLjYwNiAyLjkyOSAyLjkyOSA3LjY3OCAyLjkyOSAxMC42MDYgMGwxNy4zNjItMTcuMzYyYzMuNzE5IDIuOTQgNy4xNzUgNi4yODMgMTAuMjY5IDkuOTM1bC0yMC41NjQgMjAuNTY0Yy0zLjQwMy0uNzA5LTYuOTgzLS41My0xMC4zNi41OTVsLTExLjExOCAzLjcwNmMtNy40ODEgMi40OTUtMTUuNzIxIDIuNDk0LTIzLjIwMiAwbC0xMS4xMTctMy43MDZjLTYuMDU0LTIuMDE4LTEyLjc1Ny0uOTk0LTE3LjkzMiAyLjczNi01LjE3NiAzLjczLTguMjY2IDkuNzY3LTguMjY2IDE2LjE0N3YxNi4wNzljMCAuMzQ2LS4yODEuNjI4LS42MjcuNjI4LTYuMzYyIDAtMTIuMDgxIDMuNTM0LTE0LjkyNSA5LjIyNGwtNC4wNjIgOC4xMjUtMS41NTEtMjQuMzE1Yy0xLjI1LTE5LjU2NiA1LjQ1MS0zOC4yMTcgMTguODY3LTUyLjUxNnptLTcxLjk4IDUyLjUxN2MtMS4yNTIgMjAuNDM1LTIuMDQgMzQuMzczLTMuNDcyIDU0LjczNi0uODg4IDEyLjYyNy02Ljk4MiAyNC41MjItMTYuNjU4IDMyLjU4NS0uMDI3LjAyMi0uMDU1LjA0NS0uMDgyLjA2Ny0xMy45NzMgMTEuNjQyLTMxLjY4NCAxOC4wNTQtNDkuODcyIDE4LjA1NC00LjE0MiAwLTcuNSAzLjM1OC03LjUgNy41czMuMzU4IDcuNSA3LjUgNy41YzE5LjMzOCAwIDM4LjIyNS02LjA3OSA1My44NTktMTcuMjAxLTMuMDggNC4zNjgtNi43MiA4LjM5MS0xMC44NzYgMTEuOTgtNS43NTcgNC45NzMtOS4wNTkgMTIuMDk0LTkuMDU5IDE5LjU0djcuODM0YzAgOC44MDIgMy4wODUgMTcuMjA4IDguNDczIDIzLjg2My0yNS41OTcgOC4yMjktNTkuMTUxIDguMjQxLTg0Ljc4NS4wMDMgNS4zODktNi42NTUgOC40NzYtMTUuMDYzIDguNDc2LTIzLjg2NnYtNy44MzRjMC03LjQ0NS0zLjMwMi0xNC41NjctOS4wNTktMTkuNTQtNC4xNS0zLjU4NC03Ljc4NS03LjYtMTAuODYxLTExLjk2IDQuODgzIDMuNDc1IDEwLjA4NSA2LjQ2OCAxNS41MzMgOC45MzMgMy43NjcgMS43MDUgOC4yMTQuMDM5IDkuOTI1LTMuNzQxIDEuNzA4LTMuNzczLjAzMy04LjIxNy0zLjc0MS05LjkyNS02LjM3Ni0yLjg4NS0xMi4zNTMtNi42MzUtMTcuNzY1LTExLjE0NC05LjgyMy04LjE4Ni0xNS45MjQtMjAuMTk2LTE2LjczOC0zMi45NTItLjA4Mi0xLjI5MS0zLjM1Mi01Mi45NjEtMy40NTMtNTQuNDMzLTEuMjQ5LTE5LjU2NyA1LjQ1Mi0zOC4yMTggMTguODY4LTUyLjUxN3MzMS42MDItMjIuMTc0IDUxLjIwOS0yMi4xNzRjNDAuNjU3LjAwMSA3Mi42NjEgMzQuMjIgNzAuMDc4IDc0LjY5MnoiLz48L2c+PC9zdmc+" />
+                                    <p>
+                                        Haz una breve presentacion sobre ti mismo y define tus objetivos como aspirante
+                                        a ser
+                                        empleado.
+                                    </p>
+                                </div>
+                                <div class="text-center">
+                                    <button class="btn text-primary" id="btnPre">
+                                        <i class="far fa-plus"></i> Añadir
+                                    </button>
+                                </div>
+                                <%}%>
+                                <%} else{%>
+                                    <div class="card mb-4">
+                                        <div class="row m-0">
+                                            <div class="col-md-3 text-center bg-primary">
+                                                <div class="card-body text-white" style="position: relative; top: 50%; -webkit-transform: translateY(-50%);
+                                                        -ms-transform: translateY(-50%); transform: translateY(-50%);">
+                                                    <div class="h5 font-weight-normal">Presentacion y objetivos</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="card-body">
+                                                    <div id="presentationContainer" class="text-justify col-md-12">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <%if(req.user.userType === 'Candidate'){%>
+                                <div class="col-md-12 text-center row">
+                                    <button class="btn text-primary col-6" id="btnPre">
+                                        <i class="fal fa-edit"> </i> Editar
+                                    </button>
+                                    <form action="/definePresentation/redirectTo=<%= req.originalUrl.replaceAll('/', '*') %>" class="col-6" method="POST">
+                                        <button class="btn text-danger" type="submit">
+                                            <i class="fal fa-trash-alt"> </i> Borrar
+                                        </button>
+                                    </form>
+                                </div>
+                                <%}%>
+                            <%}%>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="card mb-4">
+                                    <div class="row m-0">
+                                        <div class="col-md-3 text-center bg-primary">
+                                            <div class="card-body text-white" style="position: relative; top: 50%; -webkit-transform: translateY(-50%);
+                                                    -ms-transform: translateY(-50%); transform: translateY(-50%);">
+                                                <div class="h5 font-weight-normal">Informaciones basicas</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="card-body">
+                                                <p class="mb-0">
+                                                    <strong class="font-weight-bold">Cedula: </strong><%= candidateData.Cedula %>
+                                                </p>
+                                                <p class="mb-0">
+                                                    <% function getEdad(){
+                                                    let hoy = new Date()
+                                                    let fechaNacimiento = new Date(candidateData.Birthdate)
+                                                    let edad = hoy.getFullYear() - fechaNacimiento.getFullYear()
+                                                    let diferenciaMeses = hoy.getMonth() - fechaNacimiento.getMonth()
+                                                    if (
+                                                      diferenciaMeses < 0 ||
+                                                      (diferenciaMeses === 0 && hoy.getDate() < fechaNacimiento.getDate())
+                                                    ) {
+                                                      edad--
+                                                    }
+                                                    return edad
+                                                  } %>
+                                                    <strong class="font-weight-bold">Edad: </strong> <%= getEdad() %> años
+                                                </p>
+                                                <p class="mb-0">
+                                                    <strong class="font-weight-bold">Fecha de nacimiento:
+                                                    </strong><%= candidateData.Birth %>
+                                                </p>
+                                                <p class="mb-0">
+                                                    <strong class="font-weight-bold">Correo: </strong><%= candidateData.Correo %>
+                                                </p>
+                                                <p class="mb-0">
+                                                    <strong class="font-weight-bold">Tel. personal: </strong><%= candidateData.TelPer %>
+                                                </p>
+                                                <p class="mb-0">
+                                                    <strong class="font-weight-bold">Tel. residencial:
+                                                    </strong><%= candidateData.TelRes %>
+                                                </p>
+                                                <p class="mb-0">
+                                                    <strong class="font-weight-bold">Direccion: </strong><%= candidateData.Calle  %>
+                                                    <%= candidateData.NumCasa  %>, <%= candidateData.Dm  %>
+                                                    - <%= candidateData.Municipio  %>, <%= candidateData.Provincia  %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <%} else if(req.params.tab === 'skillsAndLanguages'){%>
+                        <div class="row g-3 justify-content-between">
+                            <div class="col-md-12">
+                                <%if(candidateData.Habilidades === "" || candidateData.Habilidades === null){%>
+                                <%if(req.user != undefined && req.user.userType === 'Candidate'){%>
+                                <div class="text-center">
+                                    <img width="100" height="100" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTEyIDUxMjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggc3R5bGU9ImZpbGw6I0Y5QTEzRTsiIGQ9Ik0yMjIuNDA0LDEzNS45NDFjLTExLjMyOSwyNS4wODYtMjkuNTQzLDM5LjMxMy0yOS41NDMsMzkuMzEzSDQ1LjAxNWMwLDAtMjIuMDMtMTAuMDM3LTMyLjM0NS0zNy4zNDUNCgljLTYuMDc2LTE2LjA4Ny04LjA5Mi0zOC4xNzgsMC44NTgtNjcuNzMzQzM3LjY3My05LjUzOCwxOTkuMzk2LTEwLjc1OCwyMjQuNzQ3LDU5LjkxDQoJQzIzNS43ODYsOTAuNjk3LDIzMS4xNDcsMTE2LjU1NiwyMjIuNDA0LDEzNS45NDF6Ii8+DQo8Zz4NCgk8cGF0aCBzdHlsZT0iZmlsbDojRTI3ODBFOyIgZD0iTTIyMi40MDQsMTM1Ljk0MWMtMTEuMzI5LDI1LjA4Ni0yOS41NDMsMzkuMzEzLTI5LjU0MywzOS4zMTNoLTQyLjYyMw0KCQljMC0yNS44MSwyMC45OTItNDYuODAyLDQ2LjgwMi00Ni44MDJDMjA2LjM3NiwxMjguNDUzLDIxNS4wODQsMTMxLjIwNywyMjIuNDA0LDEzNS45NDF6Ii8+DQoJPHBhdGggc3R5bGU9ImZpbGw6I0UyNzgwRTsiIGQ9Ik04Ny42MzgsMTc1LjI1NUg0NS4wMTVjMCwwLTIyLjAzLTEwLjAzNy0zMi4zNDUtMzcuMzQ1YzcuODM5LTUuOTMsMTcuNTk4LTkuNDU3LDI4LjE2NS05LjQ1Nw0KCQlDNjYuNjQ2LDEyOC40NTMsODcuNjM4LDE0OS40NDQsODcuNjM4LDE3NS4yNTV6Ii8+DQo8L2c+DQo8cGF0aCBzdHlsZT0iZmlsbDojRDJFM0YxOyIgZD0iTTIxNi43NjMsMzc5LjExOHYxMjQuMzE4SDIxLjkwOVYzNzkuMTE4YzAtMTkuOTI5LDUuOTkxLTM4LjQ4LDE2LjI2OS01My45MTYNCgljMTcuNDY1LTI2LjIyMSw0Ny4yOTctNDMuNTA1LDgxLjE2NC00My41MDVjMjYuODk3LDAsNTEuMjU4LDEwLjkwNiw2OC44OTMsMjguNTI4YzQuNTY1LDQuNTY1LDguNjg0LDkuNTksMTIuMjU5LDE0Ljk4OA0KCUMyMTAuNzczLDM0MC42NSwyMTYuNzYzLDM1OS4xODksMjE2Ljc2MywzNzkuMTE4eiIvPg0KPHBhdGggc3R5bGU9ImZpbGw6I0E1QzZFMzsiIGQ9Ik0yMDAuNDk0LDMyNS4yMTRsLTM3LjEyNywzNC44OTNjLTUuNjI4LDUuMjktMTQuNDA5LDUuMjA1LTE5LjkyOS0wLjE4MWwtMjQuMDk1LTIzLjUxNg0KCWwtMjQuMDk1LDIzLjUxNmMtNS41MTksNS4zODYtMTQuMzEyLDUuNDcxLTE5LjkyOSwwLjE4MUwzOC4xOCwzMjUuMjAyYzE3LjQ2NS0yNi4yMjEsNDcuMjk3LTQzLjUwNSw4MS4xNjQtNDMuNTA1DQoJYzI2Ljg5NywwLDUxLjI1OCwxMC45MDYsNjguODkzLDI4LjUyOEMxOTIuOCwzMTQuNzkxLDE5Ni45MTksMzE5LjgxNiwyMDAuNDk0LDMyNS4yMTR6Ii8+DQo8cGF0aCBzdHlsZT0iZmlsbDojNUE5QkNDOyIgZD0iTTE4OS4wNzgsMzExLjA4OWwtMzUuNTMsMzMuMzg4bC0zNC4yMDYtMzMuMzg4bC0zNC4yMDUsMzMuMzg4bC0zNS41MjktMzMuMzg4DQoJYzE3LjY4My0xOC4xNDQsNDIuNDAxLTI5LjQwMyw2OS43MzUtMjkuNDAzYzI2LjkwMywwLDUxLjI2NCwxMC45MDEsNjguODg4LDI4LjUzOUMxODguNTEzLDMxMC41MDksMTg4Ljc5NiwzMTAuNzkyLDE4OS4wNzgsMzExLjA4OQ0KCXoiLz4NCjxnPg0KCTxwYXRoIHN0eWxlPSJmaWxsOiNGQ0NFOTk7IiBkPSJNMTE5LjMzOSwzMTEuMDg5TDExOS4zMzksMzExLjA4OWMtMTEuOTE3LDAtMjEuNTc4LTkuNjYxLTIxLjU3OC0yMS41Nzh2LTM3LjIxNmg0My4xNTd2MzcuMjE2DQoJCUMxNDAuOTE3LDMwMS40MjgsMTMxLjI1NiwzMTEuMDg5LDExOS4zMzksMzExLjA4OXoiLz4NCgk8Y2lyY2xlIHN0eWxlPSJmaWxsOiNGQ0NFOTk7IiBjeD0iMTk3LjAzNiIgY3k9IjE3NS4yNTQiIHI9IjI4LjY5Ii8+DQoJPGNpcmNsZSBzdHlsZT0iZmlsbDojRkNDRTk5OyIgY3g9IjQwLjgzMiIgY3k9IjE3NS4yNTQiIHI9IjI4LjY5Ii8+DQo8L2c+DQo8cGF0aCBzdHlsZT0iZmlsbDojRkVFNkNDOyIgZD0iTTE5Ny4wMzksOTguNjkzbC0zLjcyLDQ0LjU4bC01LjAxMiw2MC4wMTVjLTMuMDA3LDM2LjA3Ny0zMy4xNjYsNjMuODE5LTY5LjM3Niw2My44MTkNCgljLTM2LjE5OCwwLTY2LjM1Ni0yNy43NDMtNjkuMzY0LTYzLjgxOWwtNS4yNTMtNjIuOTI2bC0zLjQ3OC00MS42NjlDNDAuODM1LDk4LjY5MywxOTcuMDM5LDk4LjY5MywxOTcuMDM5LDk4LjY5M3oiLz4NCjxwYXRoIHN0eWxlPSJmaWxsOiNGQ0NFOTk7IiBkPSJNMTk3LjAzOSw5OC42OTNsLTMuNzIsNDQuNThjLTExLjkzMywyLjI0Ni0yNC4wNDcsMy4zNjktMzYuMzE4LDMuMzY5DQoJYy00MC4zODgsMC03Mi42OTctMTIuMjgzLTg5LjY0My0yMC40MTJjLTUuNjA0LDQuNjUtMTMuMjg2LDkuOTE2LTIzLjA0NSwxNC4xMzFsLTMuNDc4LTQxLjY2OQ0KCUM0MC44MzUsOTguNjkzLDE5Ny4wMzksOTguNjkzLDE5Ny4wMzksOTguNjkzeiIvPg0KPHBhdGggc3R5bGU9ImZpbGw6I0Y5QTEzRTsiIGQ9Ik0xODIuNTQ2LDc2LjM2NGMyNC4xNTYsMTguMjY1LDY2LjQyOSwyNy4wMzgsNjYuNDI5LDI3LjAzOA0KCWMtOTcuODMxLDU2LjE3My0xODQuNzkyLDAuNTkzLTE4NC43OTIsMC41OTNzLTExLjEyNiwxNC40NzgtMzIuNTY2LDIxLjg3NlY3Ni4zNjRIMTgyLjU0NnoiLz4NCjxyZWN0IHg9IjI2MS4yMzIiIHk9IjEyOC40NSIgc3R5bGU9ImZpbGw6I0QyRTNGMTsiIHdpZHRoPSIyNDMuMjYxIiBoZWlnaHQ9IjUzLjAzNSIvPg0KPHJlY3QgeD0iMjYxLjIzMiIgeT0iMTI4LjQ1IiBzdHlsZT0iZmlsbDojRkYyNzk2OyIgd2lkdGg9IjY5LjUwNiIgaGVpZ2h0PSI1My4wMzUiLz4NCjxyZWN0IHg9IjI2MS4yMzIiIHk9IjIxOS41NTgiIHN0eWxlPSJmaWxsOiNEMkUzRjE7IiB3aWR0aD0iMjQzLjI2MSIgaGVpZ2h0PSI1My4wMzUiLz4NCjxyZWN0IHg9IjI2MS4yMzIiIHk9IjIxOS41NTgiIHN0eWxlPSJmaWxsOiM4QUU0NkQ7IiB3aWR0aD0iMTgyLjAzNiIgaGVpZ2h0PSI1My4wMzUiLz4NCjxyZWN0IHg9IjI2MS4yMzIiIHk9IjMxMC42NjYiIHN0eWxlPSJmaWxsOiNEMkUzRjE7IiB3aWR0aD0iMjQzLjI2MSIgaGVpZ2h0PSI1My4wMzUiLz4NCjxyZWN0IHg9IjI2MS4yMzIiIHk9IjMxMC42NjYiIHN0eWxlPSJmaWxsOiNGRUMwMDc7IiB3aWR0aD0iMTQyLjMyMiIgaGVpZ2h0PSI1My4wMzUiLz4NCjxwYXRoIGQ9Ik0xNTEuMDY0LDQwMC40MDZjLTQuMTQzLDAtNy41MDEsMy4zNTctNy41MDEsNy41MDFjMCw0LjE0MywzLjM1Nyw3LjUwMSw3LjUwMSw3LjUwMWgzOC4wMTQNCgljNC4xNDMsMCw3LjUwMS0zLjM1Nyw3LjUwMS03LjUwMWMwLTQuMTQzLTMuMzU3LTcuNTAxLTcuNTAxLTcuNTAxSDE1MS4wNjR6Ii8+DQo8cGF0aCBkPSJNMjUyLjcxLDEwOS45MDdjMi43MDEtMS41NTEsNC4xNjMtNC42MSwzLjY3Mi03LjY4OGMtMC40OTEtMy4wNzUtMi44MzItNS41MjgtNS44ODMtNi4xNjINCgljLTAuMTM3LTAuMDI4LTQuODItMS4wMTctMTEuODMtMi45NjVjLTAuMjg3LTExLjc4Ny0yLjU4NC0yMy43NzQtNi44NjYtMzUuNzE5Yy02LjYyNi0xOC40NjgtMjEuNzk1LTMzLjUyMy00My44Ny00My41MzgNCglDMTY4LjQ5LDUuMDE0LDE0NC4xNjIsMC40OTgsMTE5LjQ1OCwxLjEyMmMtNDMuMTY0LDEuMDg5LTk4LjY4MywxOS4yNi0xMTMuMSw2Ni44ODFjLTEyLjM2OSw0MC44NTgtNC42LDY4LjQ3Nyw1LjU3LDg1LjQ5Mw0KCWMtNC41NzQsNi4wNjEtNy4yOTMsMTMuNTk3LTcuMjkzLDIxLjc1OGMwLDE5Ljk1NywxNi4yMzYsMzYuMTkzLDM2LjE5MywzNi4xOTNjMC43NTMsMCwxLjUwMy0wLjA0LDIuMjUxLTAuMDg2DQoJYzIuOTkzLDE2LjQ0LDExLjIyNSwzMS40NiwyMy42NDQsNDIuODg2YzYuOTYxLDYuNDA0LDE0Ljk0LDExLjM5MiwyMy41MzQsMTQuODM1djkuMjEyYy0xNi45OTEsNC44ODctMzIuNDkzLDE0LjAwNy00NS4xMTMsMjYuNjI3DQoJYy0wLjMzMywwLjMzMy0wLjY1NiwwLjY3Mi0wLjk4NCwxLjAwOGMtMC4wMDcsMC4wMDctMC4wMTUsMC4wMTQtMC4wMjIsMC4wMjFjLTAuMDAzLDAuMDAzLTAuMDA2LDAuMDA3LTAuMDA5LDAuMDENCgljLTE5LjE2OSwxOS42OTctMjkuNzE0LDQ1LjYxMS0yOS43MTQsNzMuMTUxdjEyNC4zMjJjMCw0LjE0MywzLjM1Nyw3LjUwMSw3LjUwMSw3LjUwMWgxOTQuODQ3YzQuMTQzLDAsNy41MDEtMy4zNTcsNy41MDEtNy41MDENCglWMzg4LjQ0M2MwLTQuMTQzLTMuMzU3LTcuNTAxLTcuNTAxLTcuNTAxcy03LjUwMSwzLjM1Ny03LjUwMSw3LjUwMXYxMDcuNDg5aC04Mi45MTlWMzI4LjQxbDIxLjk2MSwyMS40MzgNCgljMS40NTYsMS40MjEsMy4zNDcsMi4xMzMsNS4yMzksMi4xMzNjMS44NDYsMCwzLjY5Mi0wLjY3Nyw1LjEzNy0yLjAzNWwyOS45NzEtMjguMTY5YzkuNDEzLDExLjM3OSwxNi4wNjgsMjUuMTE4LDE4Ljk3Nyw0MC4yMjINCgljMC42OSwzLjU4OSwzLjgzMiw2LjA4NCw3LjM1Nyw2LjA4NGMwLjQ3LDAsMC45NDctMC4wNDQsMS40MjYtMC4xMzdjNC4wNjctMC43ODMsNi43My00LjcxNSw1Ljk0Ny04Ljc4Mw0KCWMtNy40ODYtMzguODc2LTM2LjIwNC03MC4wMjEtNzMuOTQxLTgwLjg2N3YtOS41NDljOC4yODctMy40MjksMTUuOTg4LTguMjk3LDIyLjczLTE0LjQ5OQ0KCWMxMi40MTktMTEuNDI2LDIwLjY1LTI2LjQ0NSwyMy42NDMtNDIuODg2YzAuNzQ5LDAuMDQ2LDEuNDk5LDAuMDg2LDIuMjUyLDAuMDg2YzE5Ljk1NywwLDM2LjE5Mi0xNi4yMzYsMzYuMTkyLTM2LjE5Mw0KCWMwLTkuNjE2LTMuNzc3LTE4LjM2Mi05LjkxNi0yNC44NWM2LjA0Mi0xMC4yMDgsMTAuMzQ0LTIwLjkxOSwxMi44MzktMzEuOTU5QzI0MS42MywxMTUuOTMsMjQ3LjE1MywxMTMuMDk3LDI1Mi43MSwxMDkuOTA3eg0KCSBNMjAuNzE2LDcyLjM0OWMxMi4wOTctMzkuOTYyLDYwLjk1Ni01NS4yNjgsOTkuMTItNTYuMjMyYzQwLjA3Mi0xLjAxOSw4NS44NjUsMTIuOTE3LDk3Ljg0Nyw0Ni4zMTcNCgljMy4xMTIsOC42ODQsNS4wMDQsMTcuMzUzLDUuNywyNS44OTJjLTEyLjE4Ny00LjIzNy0yNi4wOTItMTAuMjE4LTM2LjMxNC0xNy45NDhjLTMuMzA2LTIuNDk5LTguMDEtMS44NDUtMTAuNTA3LDEuNDU5DQoJYy0yLjQ5OCwzLjMwNC0xLjg0NSw4LjAwOSwxLjQ1OSwxMC41MDdjMTQuNjY2LDExLjA5LDM1LjE1NiwxOC43NjIsNTAuMDg0LDIzLjMxM2MtMC4zOTgsMC4xNzktMC43OTgsMC4zNDktMS4xOTcsMC41MjUNCgljLTAuMjE1LDAuMDgzLTAuNDI2LDAuMTc1LTAuNjMyLDAuMjc3Yy0xMC41MTksNC41OTctMjEuMjE2LDguMTEzLTMyLjA3LDEwLjU0MmMtMC42NDQsMC4wNTgtMS4yNjYsMC4xOTctMS44NTcsMC40MQ0KCWMtMjIuODQyLDQuODQzLTQ2LjM3MSw0Ljg5NC03MC4zODgsMC4xMTZjLTMyLjM2My02LjQ0MS01My41NC0xOS43MjctNTMuNzQxLTE5Ljg1NWMtMy4yNzgtMi4wOTUtNy42MTUtMS4zMzUtOS45ODcsMS43NDkNCgljLTAuMDk4LDAuMTI3LTkuOTc1LDEyLjc3LTI5LjA2NSwxOS4zNTZjLTMuOTE1LDEuMzUxLTUuOTk1LDUuNjItNC42NDQsOS41MzdjMS4zNTEsMy45MTUsNS42MTUsNS45OTYsOS41MzcsNC42NDQNCgljMC42OTQtMC4yMzksMS4zNjYtMC40OTMsMi4wNDEtMC43NDVsMC41OTIsNy4wOWMtNC43MzUsMC41NDEtOS4xOTgsMS45OTQtMTMuMjAxLDQuMTg3QzEzLjI2MSwxMjQuNjU1LDEyLjI3LDEwMC4yNSwyMC43MTYsNzIuMzQ5DQoJeiBNMTkuNjM3LDE3NS4yNTRjMC0xMC43MDQsNy45ODYtMTkuNTU4LDE4LjMwOS0yMC45NzJsMy41MTcsNDIuMTRjLTAuMjExLDAuMDA2LTAuNDIyLDAuMDI0LTAuNjM0LDAuMDI0DQoJQzI5LjE0NCwxOTYuNDQ3LDE5LjYzNywxODYuOTQsMTkuNjM3LDE3NS4yNTR6IE0xMDQuODc4LDMxNC43MjJsLTE5Ljg0NSwxOS4zNzJsLTI0LjQ4OC0yMy4wMTcNCgljOC44NC03LjY1MSwxOS4wMzUtMTMuNDc2LDMwLjA0NS0xNy4xODVDOTEuOTQyLDMwMi44MDMsOTcuMzU4LDMxMC4zOTMsMTA0Ljg3OCwzMTQuNzIyeiBNMjkuNDE4LDQ5NS45MzNWMzc5LjExMg0KCWMwLTIxLjE3Myw3LjI3Ny00MS4yMjMsMjAuNjMzLTU3LjMxMWwyOS45NDQsMjguMTQ0YzIuOTI3LDIuNzUxLDcuNSwyLjcwNiwxMC4zNzctMC4wOThsMjAuOTcyLTIwLjQ3M3YxNjYuNTU3SDI5LjQxOFY0OTUuOTMzeg0KCSBNMTUzLjY0NCwzMzQuMDk1bC0xOS44NDUtMTkuMzcyYzcuNTItNC4zMjksMTIuOTM1LTExLjkxOCwxNC4yODgtMjAuODI4YzExLjE5MywzLjc2MiwyMS4zNjUsOS42NDIsMzAuMDY3LDE3LjE2MUwxNTMuNjQ0LDMzNC4wOTUNCgl6IE0xMzMuNDE2LDI4OS41MTFjMCw3Ljc2My02LjMxNiwxNC4wNzctMTQuMDc4LDE0LjA3N3MtMTQuMDc3LTYuMzE1LTE0LjA3Ny0xNC4wNzd2LTUuNDNjMC0wLjA2MiwwLjAwMi0wLjEyMywwLTAuMTg1di0xMC41MTENCgljNC40NzksMC44MDQsOS4wNTIsMS4yMjcsMTMuNjc1LDEuMjI3YzQuOSwwLDkuNzQ1LTAuNDY1LDE0LjQ4LTEuMzY2VjI4OS41MTF6IE0xMTguOTM2LDI1OS42MTENCgljLTMyLjA0NCwwLTU5LjIzMy0yNS4wMTQtNjEuODk5LTU2Ljk0N2wtNi40NjgtNzcuNDljNi43NjMtNC4xMjQsMTEuODEzLTguNDc3LDE1LjA4MS0xMS42OTUNCgljOC43NjYsNC43MDcsMjcuNDczLDEzLjUyMSw1Mi43NTUsMTguNjM2YzEwLjk3MywyLjIyMSwyMy45MzMsMy44NTMsMzguMzM0LDMuODUyYzkuMzkzLDAsMTkuNDAxLTAuNjk5LDI5Ljg2Mi0yLjM3OGwtNS43NjYsNjkuMDc2DQoJQzE3OC4xNjgsMjM0LjU5NiwxNTAuOTc5LDI1OS42MTEsMTE4LjkzNiwyNTkuNjExeiBNMTk3LjA0MywxOTYuNDQ3Yy0wLjIxMiwwLTAuNDIzLTAuMDE4LTAuNjM1LTAuMDI0bDMuNTE3LTQyLjE0DQoJYzEwLjMyMiwxLjQxNCwxOC4zMDksMTAuMjY3LDE4LjMwOSwyMC45NzJDMjE4LjIzNCwxODYuOTQsMjA4LjcyNywxOTYuNDQ3LDE5Ny4wNDMsMTk2LjQ0N3ogTTIxMC45NDksMTQxLjg0NA0KCWMtMy4wNjctMS4yODEtNi4zNDktMi4xNDgtOS43NzItMi41MzlsMC43MzctOC44MzRjNS40NDQtMS4zNDcsMTAuOTg3LTIuOTgsMTYuNjA0LTQuOTI4DQoJQzIxNi41NDYsMTMxLjA5OCwyMTQuMDE1LDEzNi41NDEsMjEwLjk0OSwxNDEuODQ0eiIvPg0KPHBhdGggZD0iTTgxLjg5OSwxNjEuNzQxYy00LjE0MywwLTcuNTAxLDMuMzU3LTcuNTAxLDcuNTAxdjEuNTM2YzAsNC4xNDMsMy4zNTcsNy41MDEsNy41MDEsNy41MDFjNC4xNDMsMCw3LjUwMS0zLjM1Nyw3LjUwMS03LjUwMQ0KCXYtMS41MzZDODkuMzk5LDE2NS4wOTgsODYuMDQxLDE2MS43NDEsODEuODk5LDE2MS43NDF6Ii8+DQo8cGF0aCBkPSJNMTU1Ljc5LDE2MS43NDFjLTQuMTQzLDAtNy41MDEsMy4zNTctNy41MDEsNy41MDF2MS41MzZjMCw0LjE0MywzLjM1Nyw3LjUwMSw3LjUwMSw3LjUwMWM0LjE0MywwLDcuNTAxLTMuMzU3LDcuNTAxLTcuNTAxDQoJdi0xLjUzNkMxNjMuMjkxLDE2NS4wOTgsMTU5LjkzMywxNjEuNzQxLDE1NS43OSwxNjEuNzQxeiIvPg0KPHBhdGggZD0iTTEzMi43NjEsMjA5Ljg4MmMtMy4xMDksMi4zNzgtNy43MywzLjc0MS0xMi42NzUsMy43NDFjLTQuOTQ1LDAtOS41NjUtMS4zNjMtMTIuNjc1LTMuNzQxDQoJYy0zLjI5Mi0yLjUxOC03Ljk5OS0xLjg4OC0xMC41MTUsMS40MDJjLTIuNTE2LDMuMjktMS44ODgsNy45OTgsMS40MDIsMTAuNTE1YzUuNzU2LDQuNDAxLDEzLjQ5NCw2LjgyNiwyMS43ODcsNi44MjYNCglzMTYuMDMtMi40MjQsMjEuNzg3LTYuODI2YzMuMjktMi41MTcsMy45MTgtNy4yMjUsMS40MDItMTAuNTE1QzE0MC43NTgsMjA3Ljk5NCwxMzYuMDUxLDIwNy4zNjgsMTMyLjc2MSwyMDkuODgyeiIvPg0KPHBhdGggZD0iTTI2NS42NCwzOTYuMjhjLTQuMTQzLDAtNy41MDEsMy4zNTctNy41MDEsNy41MDF2MTcuOTE5YzAsNC4xNDMsMy4zNTcsNy41MDEsNy41MDEsNy41MDFzNy41MDEtMy4zNTcsNy41MDEtNy41MDF2LTE3LjkxOQ0KCUMyNzMuMTQxLDM5OS42MzksMjY5Ljc4NCwzOTYuMjgsMjY1LjY0LDM5Ni4yOHoiLz4NCjxwYXRoIGQ9Ik0yOTMuMjIzLDM5Ni4yOGMtNC4xNDMsMC03LjUwMSwzLjM1Ny03LjUwMSw3LjUwMXYxNy45MTljMCw0LjE0MywzLjM1Nyw3LjUwMSw3LjUwMSw3LjUwMWM0LjE0MywwLDcuNTAxLTMuMzU3LDcuNTAxLTcuNTAxDQoJdi0xNy45MTlDMzAwLjcyMywzOTkuNjM5LDI5Ny4zNjYsMzk2LjI4LDI5My4yMjMsMzk2LjI4eiIvPg0KPHBhdGggZD0iTTMyMC44MDUsMzk2LjI4Yy00LjE0MywwLTcuNTAxLDMuMzU3LTcuNTAxLDcuNTAxdjE3LjkxOWMwLDQuMTQzLDMuMzU3LDcuNTAxLDcuNTAxLDcuNTAxYzQuMTQzLDAsNy41MDEtMy4zNTcsNy41MDEtNy41MDENCgl2LTE3LjkxOUMzMjguMzA2LDM5OS42MzksMzI0Ljk0OCwzOTYuMjgsMzIwLjgwNSwzOTYuMjh6Ii8+DQo8cGF0aCBkPSJNMzQ4LjM4OCwzOTYuMjhjLTQuMTQzLDAtNy41MDEsMy4zNTctNy41MDEsNy41MDF2MTcuOTE5YzAsNC4xNDMsMy4zNTcsNy41MDEsNy41MDEsNy41MDFzNy41MDEtMy4zNTcsNy41MDEtNy41MDF2LTE3LjkxOQ0KCUMzNTUuODg5LDM5OS42MzksMzUyLjUzMSwzOTYuMjgsMzQ4LjM4OCwzOTYuMjh6Ii8+DQo8cGF0aCBkPSJNNTA0LjQ5OSwxMjAuOTUzaC0xOTUuNTljLTQuMTQzLDAtNy41MDEsMy4zNTctNy41MDEsNy41MDFjMCw0LjE0MywzLjM1Nyw3LjUwMSw3LjUwMSw3LjUwMWgxNC4zMjh2MzguMDM3aC01NC41MDN2LTM4LjAzNw0KCWgxMi4zMThjNC4xNDMsMCw3LjUwMS0zLjM1Nyw3LjUwMS03LjUwMWMwLTQuMTQzLTMuMzU3LTcuNTAxLTcuNTAxLTcuNTAxaC0xOS44MTljLTQuMTQzLDAtNy41MDEsMy4zNTctNy41MDEsNy41MDF2NTMuMDM5DQoJYzAsNC4xNDMsMy4zNTcsNy41MDEsNy41MDEsNy41MDFoMjQzLjI2NWM0LjE0MywwLDcuNTAxLTMuMzU3LDcuNTAxLTcuNTAxdi01My4wMzlDNTEyLDEyNC4zMSw1MDguNjQyLDEyMC45NTMsNTA0LjQ5OSwxMjAuOTUzeg0KCSBNNDk2Ljk5OCwxNzMuOTkxaC0xNTguNzZ2LTM4LjAzN2gxNTguNzZWMTczLjk5MXoiLz4NCjxwYXRoIGQ9Ik01MDQuNDk5LDIxMi4wNkgyNjEuMjM0Yy00LjE0MywwLTcuNTAxLDMuMzU3LTcuNTAxLDcuNTAxdjUzLjA0YzAsNC4xNDMsMy4zNTcsNy41MDEsNy41MDEsNy41MDFoMjQzLjI2NQ0KCWM0LjE0MywwLDcuNTAxLTMuMzU3LDcuNTAxLTcuNTAxdi01My4wNEM1MTIsMjE1LjQxOSw1MDguNjQyLDIxMi4wNiw1MDQuNDk5LDIxMi4wNnogTTI2OC43MzUsMjI3LjA2MmgxNjcuMDM0VjI2NS4xSDI2OC43MzUNCglMMjY4LjczNSwyMjcuMDYyTDI2OC43MzUsMjI3LjA2MnogTTQ5Ni45OTgsMjY1LjFoLTQ2LjIyOXYtMzguMDM4aDQ2LjIyOVYyNjUuMXoiLz4NCjxwYXRoIGQ9Ik01MDQuNDk5LDMwMy4xN0gyNjEuMjM0Yy00LjE0MywwLTcuNTAxLDMuMzU3LTcuNTAxLDcuNTAxdjUzLjAzOWMwLDQuMTQzLDMuMzU3LDcuNTAxLDcuNTAxLDcuNTAxaDE2OC4zMzENCgljNC4xNDMsMCw3LjUwMS0zLjM1Nyw3LjUwMS03LjUwMXMtMy4zNTctNy41MDEtNy41MDEtNy41MDFoLTE4LjUxM3YtMzguMDM3aDg1Ljk0NXYzOC4wMzdoLTM5LjU3Ng0KCWMtNC4xNDMsMC03LjUwMSwzLjM1Ny03LjUwMSw3LjUwMXMzLjM1Nyw3LjUwMSw3LjUwMSw3LjUwMWg0Ny4wNzdjNC4xNDMsMCw3LjUwMS0zLjM1Nyw3LjUwMS03LjUwMXYtNTMuMDM5DQoJQzUxMiwzMDYuNTI4LDUwOC42NDIsMzAzLjE3LDUwNC40OTksMzAzLjE3eiBNMzk2LjA1MywzNTYuMjA5SDI2OC43MzV2LTM4LjAzN2gxMjcuMzE4VjM1Ni4yMDl6Ii8+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==" />
+                                    <p>Defina las habilidades que te definan a nivel laboral</p>
+                                    <button class="btn text-primary" id="btnSkills">
+                                        <i class="far fa-plus"></i> Añadir
+                                    </button>
+                                </div>
+                                <%}%>
+                                    <%} else{%>
+                                        <div class="card mb-4">
+                                            <div class="row m-0">
+                                                <div class="col-md-3 text-center bg-primary">
+                                                    <div class="card-body text-white" style="position: relative; top: 50%; -webkit-transform: translateY(-50%);
+                                                            -ms-transform: translateY(-50%); transform: translateY(-50%);">
+                                                        <div class="h5 font-weight-normal">Habilidades</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <div class="card-body">
+                                                        <div class="row" id="">
+                                                            <% candidateData.Habilidades.split(".").forEach(lang => { 
+                                                                lang.replaceAll(" ", "")
+                                                                if(lang === "" || lang === " "){
+                                                                    return delete lang
+                                                                }%>
+                                                            <div class="col-md-6 mb-2 ">
+                                                                <div class="card mb-0 border rounded bg-white text-dark text-center">
+                                                                    <div class="card-body">
+                                                                        <%= lang %>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <%}) %>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+                                <%if(req.user.userType === 'Candidate'){%>
+                                <div class="text-center row">
+                                    <button class="btn text-primary col-6" id="btnSkills">
+                                        <i class="far fa-plus"></i> Añadir
+                                    </button>
+                                    <form action="/defineSkills/redirectTo=<%= req.originalUrl.replaceAll('/', '*') %>" class="col-6" method="POST">
+                                        <button class="btn text-danger" type="submit">
+                                            <i class="fal fa-trash-alt"> </i> Borrar
+                                        </button>
+                                    </form>
+                                </div>
+                                <%}%>
+                                <%}%>
+                            </div>
+                            <div class="col-md-12">
+                                <%if(candidateData.Idiomas === null || candidateData.Idiomas === ''){%>
+                                <%if(req.user != undefined && req.user.userType === 'Candidate'){%>
+                                <div class="text-center">
+                                    <img width="100" height="100" src="data:image/svg+xml;base64,PHN2ZyBpZD0iQ2FwYV8xIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHdpZHRoPSI1MTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGc+PGc+PHBhdGggZD0ibTUwNC41IDI3My4xMDFjMC03MC45NjEtMzEuOTQyLTEzNC40NjItODIuMjMyLTE3Ni45MDktNDAuMjc5LTMzLjk5OC0xNTMuNDM4LTM3Ljg5Mi0xNTMuNDM4LTM3Ljg5MmwtODIuMDEyLjQ3M2MtLjYxLjI1OC0xLjM0Ny4wNzktMS45NTQuMzQyLTgwLjM4MiAzNC44ODItMTMyLjU0NSAxMTcuNTMxLTEzMi41NDUgMjEzLjYwNSAwIDEyNy43OTggOTUuMjgzIDIxNC43NiAyMjMuMDgxIDIxNC43NiAzOC40MjIgMCA3Mi4zNTcgNy42NTYgMTA0LjI0Ny04LjkxNSA3NC4xODItMzguNTQ2IDEyNC44NTMtMTE2LjA4OCAxMjQuODUzLTIwNS40NjR6IiBmaWxsPSIjOTRjY2Q0Ii8+PHBhdGggZD0ibTQyMi4yNyA5Ni4xOWMtMjMuNTMgMTUuMzktNDguNzkgMzAuNjYtNTguMjYgMzIuNzMtMjUuOTkgNy42LTU5LjgyLTguNS02Ni43NyAyOS44My0uMiA3LjQtLjg1IDE0LjQzLTEuOTYgMjAuOTktMS4yNCA3LjMyLTMuOTYgMTQuMjEtNy45MSAyMC4zM3MtMTQuNDYzIDcuOTA2LTIwLjU4MyAxMi4xMDZjLTE2Ljg1IDExLjU4LTMwLjU0MSAxMi4yNzQtNDguNjgxIDIuODI0LS40Ni0uMjQtLjkzLS40OS0xLjQtLjc0LTMwLjIyLTE0LjgxLTQ3Ljk3My00OC44Ny0xNi42NDMtNzMuNzYgMjAuNTktMTcgMTcuNDc2LTQ2Ljk4NyAzLjA4Ni02NS43MjdsLTguNjYtMTAuMDJjNi43MjMtMi43NzcgMy45ODYtMTAuODc4IDExLjAxLTEzLjAyMSAyMS4zODUtNi41MjQgNDQuMDg0LTEwLjAzMiA2Ny42LTEwLjAzMiA1Ni44NDEgMCAxMDguODkxIDIwLjQ5IDE0OS4xNzEgNTQuNDl6IiBmaWxsPSIjYjdlNTQ2Ii8+PHBhdGggZD0ibTQ1Mi41NjYgMjE1LjgyMWMtLjEyOS0xOS4xMDEtNy44NDEtMzcuMzgxLTIxLjQ0NC01MC44MDEtMTEuNjA1LTEzLjI3OC0xNS42MTktMjEuMTg5LTMxLjU2OS02LjUzLTE1LjExOCAxOC44MDUtLjIwNyA0Mi4xNDUtMzIuMzQgNzQuMjEzLTUuNjkxIDUuNzkzLTguODg0IDEzLjcyMy04LjU2MyAyMS44NTItLjAxMi0uMDAyLS4wMDctMS40MzYtLjAxOC0xLjQzOCAxLjE1NSAyMC4xMzUgMTQuOTA4IDM2LjM2NiAzNC41MSAzNi4zNjYgMjUuMTgtLjAwMSA1OS40MjQtMjkuNTU5IDU5LjQyNC03My42NjJ6IiBmaWxsPSIjYjdlNTQ2Ii8+PHBhdGggZD0ibTM4MC4xMiAyMzEuMjFjLTUuNjkgNS44LTguODkgMTMuNzMtOC41NyAyMS44Ni0uMDEtLjAxLS4wMS0uMDItLjAyLS4wMi45NiAxNi42NyAxNS40MSAzMC43IDMxLjQ4IDM1LjA0LTMuMzcuOTItNi42OSAxLjM5LTkuODcgMS4zOS0xOS42IDAtNDAuNDUtMTYuMjktNDEuNjEtMzYuNDMuMDEgMCAuMDEuMDEuMDIuMDItLjMyLTguMTMgMi44OC0xNi4wNiA4LjU3LTIxLjg2IDMyLjEzLTMyLjA2IDEzLjUxLTU3LjExIDI4LjYzLTc1LjkxIDkuMTEtOC4zOCAxNy44Ni04LjM0IDI1Ljg0LTQuMjktMS45MyAxLjA3LTMuODcgMi40OC01Ljg0IDQuMjktMTUuMTIgMTguOCAzLjUgNDMuODUtMjguNjMgNzUuOTF6IiBmaWxsPSIjYWJkNjQxIi8+PHBhdGggZD0ibTQ3NC4zMDMgMjUuMDAxdjExNS41MDZsLTcuMzYgNi45ODhjMCA5LjY2NS0xMC45ODggMTEuMTIxLTIwLjY1NCAxMS4xMjFsLTUyLjgyOS0uMzk3Yy0yLjQ1OCAwLTQuODU0Ljc3Ni02Ljg0NCAyLjIxOGwtNDMuNTk1IDMwLjI3MWMtMy44NTcgMi43OTQtOS4yNTYuMDM4LTkuMjU2LTQuNzI0bDQuMDkyLTE0LjU1OWMwLTYuNDQ0LTUuMjI0LTExLjY2Ny0xMS42NjctMTEuNjY3aC0xNGMtOS42NjUgMC0xNy41MDEtNy44MzUtMTcuNTAxLTE3LjUwMWwtMi4xMS0xMDguMzU3YzAtOS42NjUgMy44MzktMTkuODU5IDEzLjUwNC0xOS44NTlsNC44NzgtNi41NDFoMTQ1Ljg0MWM5LjY2NiAwIDE3LjUwMSA3LjgzNSAxNy41MDEgMTcuNTAxeiIgZmlsbD0iI2RjNDk1NSIvPjxwYXRoIGQ9Im00NzQuMzAzIDE0MC41MDd2NS44MzRjMCA5LjY2Ni03LjgzNSAxNy41MDEtMTcuNTAxIDE3LjUwMWgtNjIuNjNjLTIuNDYyIDAtNC44NTQuNzgyLTYuODM3IDIuMjE3bC00Ny4yODggMzQuMjQzYy0zLjg1IDIuOC05LjI1Mi4wNDctOS4yNTItNC43MjV2LTIwLjA2OGMwLTYuNDQ0LTUuMjI0LTExLjY2Ny0xMS42NjctMTEuNjY3aC0xNC4wMDFjLTkuNjY1IDAtMTcuNTAxLTcuODM1LTE3LjUwMS0xNy41MDF2LTEyMS4zNGMwLTkuNjY1IDcuODM1LTE3LjUwMSAxNy41MDEtMTcuNTAxaDUuODM0djEzMC42NzRjMCAxLjI4OSAxLjA0NSAyLjMzMyAyLjMzMyAyLjMzM2g1LjgzNGMxMy40MjkgMCAyNS4xMTIgNy41OTUgMzAuOTc5IDE4LjcyNSAxIDEuODk3IDMuNDI1IDIuNDk2IDUuMTYyIDEuMjM3bDE4LjM2OC0xMy4zMTJjNi4wMDktNC4zNTIgMTMuMTE0LTYuNjUgMjAuNTM0LTYuNjV6IiBmaWxsPSIjZDgyZjNjIi8+PHBhdGggZD0ibTMyOC4xIDQ4NC4yOGMtMTMwLjg2IDAtMjM2Ljk1LTEwNS43OC0yMzYuOTUtMjM2LjI2IDAtNzcuNzEgMzUuNjI4LTE0NS44NDUgOTMuNzE4LTE4OC45MDUtODQuMDI5IDM0LjY4NS0xNDMuMTY4IDExNy40My0xNDMuMTY4IDIxMy45ODUgMCAzOS4zNDcgOS44MiA3Ni40IDI3LjE0NCAxMDguODQyIDAgMCA1NC45ODkgNDMuNTUgODIuNzk1IDY0LjAxNCAzOC4zNTggMjguMjMgMTEyLjg5IDQ2LjQzOSAxMTIuODkgNDYuNDM5czgyLjkzMiAyLjgxNCAxMTQuNzMyLTEzLjY0NmMtMTYuNDgxIDMuNjIxLTMzLjU5MSA1LjUzMS01MS4xNjEgNS41MzF6IiBmaWxsPSIjNmZiYmM2Ii8+PHBhdGggZD0ibTM3OS42MzUgNDc4LjU0MWMtMTguNTk1LTI1Ljg5OS01Mi43OTMtNTQuNDUxLTUxLjMyMy04OC44NC41MDEtMTEuNzI0LTEuMDQ2LTIzLjQ4Ny00LjkwNi0zNC41NzQtLjA2MS0uMTUtLjExLS4yOTctLjE1OS0uNDQzLTEuOTUyLTUuNDkxLTQuODg0LTEwLjU3Mi04LjUzNS0xNS4xMDEtMTAuMDc4LTEyLjUyLTMxLjU4My00NS4xODQtNDIuMDk4LTQ5Ljc2NC0yMC4wNzktMTIuNDE5LTQ3LjI2My0zLjE3MS01OC4wMDUgMTcuMjItOS4zMjQgMjMuNTg3LTExLjg5NiA1NS45MDUtMzYuMjUzIDY4LjYyNy0xNC41NiA3Ljg5Ni0zNS41NDUgNi4xMjItNDYuNjIxLTYuOTUyLTE5LjIxNy0yNC45Ni00Ni4xMjItLjgyNi02Mi44NjggMTMuMjE4IDYuNjU0IDEyLjQzMSAzMy44MDMgMjEuNTQ0IDQyLjU4MyAzMi41NyAzNi40MyA0NS43NjEgNjguODUzIDYzLjQwMSAxMjIuMjM0IDcyLjk4IDQ5LjY1MiA5LjAxIDEwMC42MDIgMTQuNjE0IDE0NS40MS04LjY2Ni4xOC0uMDk0LjM2MS0uMTgyLjU0MS0uMjc1eiIgZmlsbD0iI2I3ZTU0NiIvPjxwYXRoIGQ9Im0zNzkuMTcgNDc4Ljc3Yy0zOS43OCAyMC42OTctODUuNzE1IDI5LjEzOC0xMzAuMjggMjQuNDZ2LS4wMWMtNzUuMzE5LTcuMzY1LTE0NC44MjktNTQuMzQ4LTE4MC4wMi0xMjEuMjkgMTMuMjQtMTEuMTEgMzIuODUtMjguNTQgNDkuOTgtMjIuOTcgMzkuODUgNzQuNTcgMTE4LjYxIDEyNS4zMiAyMDkuMjUgMTI1LjMyIDE3LjU0IDAgMzQuNjItMS45IDUxLjA3LTUuNTF6IiBmaWxsPSIjYWJkNjQxIi8+PHBhdGggZD0ibTQzMC43NzUgMjc4LjQyN3YxMTUuNTA2bC03LjM2IDYuOTg4YzAgOS42NjUtMTAuOTg4IDExLjEyMS0yMC42NTQgMTEuMTIxbC01Mi44MjktLjM5N2MtMi40NTggMC00Ljg1NC43NzYtNi44NDQgMi4yMThsLTQzLjU5NSAzMC4yNzFjLTMuODU3IDIuNzk0LTkuMjU2LjAzOC05LjI1Ni00LjcyNGw0LjA5Mi0xNC41NTljMC02LjQ0NC01LjIyNC0xMS42NjctMTEuNjY3LTExLjY2N2gtMTQuMDAxYy05LjY2NSAwLTE3LjUwMS03LjgzNS0xNy41MDEtMTcuNTAxbC0yLjExLTEwOC4zNTZjMC05LjY2NSAzLjgzOS0xOS44NTkgMTMuNTA0LTE5Ljg1OWw0Ljg3OC02LjU0MWgxNDUuODQxYzkuNjY2LS4wMDEgMTcuNTAyIDcuODM1IDE3LjUwMiAxNy41eiIgZmlsbD0iI2ZmYmY1NCIvPjxwYXRoIGQ9Im00MzAuNzc1IDM5My45MzN2NS44MzRjMCA5LjY2NS03LjgzNSAxNy41MDEtMTcuNTAxIDE3LjUwMWgtNjIuNjNjLTIuNDYyIDAtNC44NTQuNzgyLTYuODM3IDIuMjE3bC00Ny4yODggMzQuMjQzYy0zLjg1IDIuOC05LjI1Mi4wNDctOS4yNTItNC43MjV2LTIwLjA2OGMwLTYuNDQ0LTUuMjI0LTExLjY2Ny0xMS42NjctMTEuNjY3aC0xNC4wMDFjLTkuNjY1IDAtMTcuNTAxLTcuODM1LTE3LjUwMS0xNy41MDF2LTEyMS4zNGMwLTkuNjY1IDcuODM1LTE3LjUwMSAxNy41MDEtMTcuNTAxaDUuODM0djEzMC42NzRjMCAxLjI4OSAxLjA0NSAyLjMzMyAyLjMzMyAyLjMzM2g1LjgzNGMxMy40MjkgMCAyNS4xMTIgNy41OTUgMzAuOTc5IDE4LjcyNSAxIDEuODk3IDMuNDI1IDIuNDk2IDUuMTYyIDEuMjM3bDE4LjM2OC0xMy4zMTJjNi4wMDktNC4zNTIgMTMuMTE0LTYuNjUgMjAuNTM0LTYuNjV6IiBmaWxsPSIjZmZhNDQyIi8+PHBhdGggZD0ibTIwNy42NiAxNTMuNDItLjI5LjI0Yy0zLjg2IDMuMDctMTcuMjYgMTUuMzQtMjYuNzYgMjUuODYtMy44Mi0xNC40My0uNS0yOS43NSAxNC4zMi00MS41MiAyMC41OS0xNyAxMi45OS01MC4xMi0xLjQtNjguODZsLTguNjY2LTEwLjAyNWM2LjcyLTIuNzggMTMuNjA2LTUuMjQ1IDIwLjYzNi03LjM4NSA2LjIyIDkuNDUgMTEuNzUgMTcuNDEgMTEuNzUgMTcuNDEgMTQuOTEgMjcuNzcgMTUuNTggNjMuNTEtOS41OSA4NC4yOHoiIGZpbGw9IiNhYmQ2NDEiLz48cGF0aCBkPSJtMjg4LjIxIDE5OC43MWMtLjI3LjQ2LS41NS45MS0uODQgMS4zNi0zLjk1IDYuMTItOS4xMSAxMS40Ni0xNS4yMyAxNS42Ni0xNi44NSAxMS41OC0zOC43IDEyLjg4LTU2Ljg0IDMuNDMtLjQ2LS4yNC0uOTMtLjQ5LTEuNC0uNzQtMjguNDQtMTMuOTQtNDcuODktNTAuODEtMjMuOTgtNzUuODUtNy42MSAyMi45OCAxMC4zNiA0OS41MSAzNC41NSA2MC44NS40OS4yNS45OC41IDEuNDYuNzQgMTguOTYgOS40NSA0MS44IDguMTUgNTkuNDEtMy40My45OC0uNjQgMS45NC0xLjMxIDIuODctMi4wMnoiIGZpbGw9IiNhYmQ2NDEiLz48ZyBmaWxsPSIjOTRjY2Q0Ij48cGF0aCBkPSJtMjQ2LjM2MiA1MDIuOTQ1Yy4wNjQuMDA3LjEyOC4wMTUuMTkyLjAyMi0uMDY0LS4wMDctLjEyOC0uMDE0LS4xOTItLjAyMnoiLz48cGF0aCBkPSJtMTc0LjYzNSA0ODIuNTM1Yy4yMjcuMTA3LjQ1Ni4yMTEuNjgzLjMxNy0uMjI4LS4xMDYtLjQ1Ni0uMjEtLjY4My0uMzE3eiIvPjxwYXRoIGQ9Im0zNzkuMjYgNDc4Ljc1Yy00LjEzIDIuMTQtOC4zMiA0LjE1LTEyLjU5IDYuMDMgNC4yLTEuODYgOC4zNC0zLjg1IDEyLjQyLTUuOTcuMDMtLjAxLjA1LS4wMy4wOC0uMDRzLjA2LS4wMS4wOS0uMDJ6Ii8+PC9nPjxwYXRoIGQ9Im0xNS41NTMgMTQ0LjUwMiAxLjQ2OCAxMDAuNjM3YzAgOS44NTUgOC4wMyAxNy44NDQgMTcuOTM2IDE3Ljg0NGw1Ni4zMDUgMS44NGMyLjUxOSAwIDQuOTc0Ljc5MiA3LjAxNCAyLjI2MmwzOC40MjcgMzIuNDg2YzMuOTUzIDIuODQ5IDkuNDg2LjAzOSA5LjQ4Ni00LjgxN2wyLjQyOC0xNS43MDVjMC02LjU3IDUuMzUzLTExLjg5NiAxMS45NTctMTEuODk2bDE4LjU4NC0uMDY4YzkuOTA2IDAgMTkuNjYtMi4zNTIgMTkuNjYtMTIuMjA3di0xMjMuNzIxYzAtOS44NTUtOC4wMy0xNy44NDQtMTcuOTM2LTE3Ljg0NGgtMTU1LjQ0NmMtOS45MDYgMC05Ljg4MyAyMS4zMzQtOS44ODMgMzEuMTg5eiIgZmlsbD0iI2ZhZjhmOCIvPjxwYXRoIGQ9Im0xOTguODIgMjUyLjcydjIuMTZjMCA5Ljg1LTguMDMgMTcuODQtMTcuOTQgMTcuODRoLTE0LjM1Yy02LjYgMC0xMS45NSA1LjMzLTExLjk1IDExLjl2MjAuNDdjMCA0Ljg1LTUuNTQgNy42Ni05LjQ5IDQuODFsLTQ4LjQ1LTM0LjkyYy0yLjA0LTEuNDctNC41LTIuMjYtNy4wMi0yLjI2aC02NC4xOGMtOS45MSAwLTE3Ljk0LTcuOTktMTcuOTQtMTcuODR2LTEyMy43MmMwLTkuODYgOC4wMy0xNy44NSAxNy45NC0xNy44NWgyLjA2djEzNC40MWMwIDIuNzYxIDIuMjM5IDUgNSA1aDU3LjEyYzYuNzIgMCAxMy4yNyAyLjEyIDE4LjcxIDYuMDRsMjIuMzUgMTYuMTFjMi4xNCAxLjU0IDUuMTIuNiA2LjA4LTEuODUgNC42Ni0xMS44NyAxNi4yNS0yMC4zIDI5Ljc3LTIwLjN6IiBmaWxsPSIjZjBlOWU2Ii8+PC9nPjxnPjxwYXRoIGQ9Im00ODEuODg4IDE1Ni45MTJjLjgxLTIuNDcyIDEuMjU0LTUuMTA4IDEuMjU0LTcuODQ2di0xMjMuNzIyYzAtMTMuOTc1LTExLjQxMS0yNS4zNDQtMjUuNDM2LTI1LjM0NGgtMTU1LjQ0NmMtMTQuMDI1IDAtMjUuNDM2IDExLjM2OS0yNS40MzYgMjUuMzQ0djguOTAyYy0zMy41MzMtLjY3Mi02OC4zODcgNi4yODctOTkuMjAyIDE5LjgwMS0yOC4yMTIgMTIuMzEzLTUzLjQzOCAyOS43MzEtNzUuMDQ2IDUxLjc2NWgtMjYuNTc2Yy00LjE0MiAwLTcuNSAzLjM1OC03LjUgNy41czMuMzU4IDcuNSA3LjUgNy41aDEwNC44ODJjNS43NTQgMCAxMC40MzYgNC42NDEgMTAuNDM2IDEwLjM0NHYxMjMuNzIxYzAgNS43MDQtNC42ODIgMTAuMzQ1LTEwLjQzNiAxMC4zNDVoLTE0LjM0OWMtMTAuNzI5IDAtMTkuNDU4IDguNzAxLTE5LjQ1OCAxOS4zOTZ2MTcuNDdsLTQ2LjA1NC0zMy4xODhjLTMuMzM4LTIuNDA2LTcuMjgtMy42NzctMTEuMzk5LTMuNjc3aC02NC4xODZjLTUuNzU0IDAtMTAuNDM2LTQuNjQxLTEwLjQzNi0xMC4zNDV2LTEyMy43MjFjMC01LjcwNCA0LjY4Mi0xMC4zNDQgMTAuNDM2LTEwLjM0NGgxNS41NjRjNC4xNDIgMCA3LjUtMy4zNTggNy41LTcuNXMtMy4zNTgtNy41LTcuNS03LjVoLTE1LjU2NGMtMTQuMDI1IDAtMjUuNDM2IDExLjM2OS0yNS40MzYgMjUuMzQ0djEyMy43MjFjMCAxMy45NzUgMTEuNDExIDI1LjM0NSAyNS40MzYgMjUuMzQ1aDguODgxYzEuNzc4IDYxLjE0MyAyNi40MTggMTE4LjM2NyA2OS44NTcgMTYxLjgwNiA0NS4xMjIgNDUuMTIxIDEwNS4xMTUgNjkuOTcxIDE2OC45MjcgNjkuOTcxIDMzLjE3NyAwIDY1LjI5My02LjY3NCA5NS40NTgtMTkuODM2IDI5LjEzNC0xMi43MTIgNTUuMDk2LTMwLjg1MiA3Ny4xNjYtNTMuOTE1IDIuODY0LTIuOTkzIDIuNzYtNy43NC0uMjMzLTEwLjYwNC0yLjk5NC0yLjg2NC03Ljc0LTIuNzYtMTAuNjA0LjIzMy0xNi40NzkgMTcuMjItMzUuMTc1IDMxLjQzNy01NS40NjIgNDIuNDE5LTkuNTMyLTEyLjY4Ni0yMy41MTktMjcuOTUtMzIuODctNDIuNThsMS43ODgtMS4yODljLjc2OC0uNTU0IDEuNjc3LS44NDYgMi42MjgtLjg0Nmg2NC4xODZjMTQuMDI1IDAgMjUuNDM2LTExLjM2OSAyNS40MzYtMjUuMzQ0di0xMjMuNzIxYzAtMS42NzUtLjE2OC0zLjMxLS40ODEtNC44OTUgMTIuODktMTUuNDI5IDE5Ljk1MS0zNS4wOTcgMTkuOTUxLTU1Ljg1Mi0uMS0xNC43NTktNC4yNy0yOS4wMTktMTEuOTI3LTQxLjM2aDkuNTY4YzUuMjY0IDAgMTAuMTYtMS42MDIgMTQuMjIzLTQuMzQyIDE2LjQyNyAzMS42NzMgMjUuMDcyIDY3LjA3OSAyNS4wNzIgMTAzLjAzMyAwIDQ2LjI5Ny0xNC4wMDYgOTAuNzIzLTQwLjUwNCAxMjguNDc2LTIuMzggMy4zOS0xLjU2MSA4LjA2OCAxLjgzIDEwLjQ0NyAyLjIzOCAxLjYwOCA3LjA1IDIuMjUyIDEwLjQ0Ny0xLjgzIDI4LjI3OS00MC4yOSA0My4yMjctODcuNjk2IDQzLjIyNy0xMzcuMDkzIDAtNDAuNzM4LTEwLjQwMi04MC44MjctMzAuMTEyLTExNi4xODl6bS0zMDEuMDA2LTUxLjA5OWgtNTYuNjEyYzE3LjYxMy0xNS43MzUgMzcuMjk1LTI4LjM4OCA1OC40MjYtMzcuNzEzbDUuMDE0IDUuNzg1YzguNDE3IDExLjA1IDEzLjY3MSAyNi45MTMgMTEuOTQ4IDQwLjE5NC00LjY1NC01LjA3Ni0xMS4zNDgtOC4yNjYtMTguNzc2LTguMjY2em0xNzQuNjc2IDM1OC42MTVjMy41ODYgNC4zNjggNy4wMzQgOC41NzMgMTAuMiAxMi42NzgtMjguNjY5IDEzLjAzNy02MC4wNzMgMTkuODk0LTkyLjY1NyAxOS44OTQtODMuOTIgMC0xNTcuMTktNDYuNDE3LTE5NS41MjMtMTE0LjkxNyAxMC41NzQtOC43MjEgMjQuMTk1LTE5LjMyIDM1LjA3Ny0xOC4wNTggNC40NDEuNTE2IDguMzczIDMuMTExIDEyLjAyIDcuOTM3IDkuMTI2IDEyLjA2NCAyNC41MjYgMTQuNDE1IDM1LjMxNSAxNS4xMzQgMTYuMTEtLjk5NiAzMC40NjYtOS4yMjUgMzkuNDI5LTIyLjQ5MyAyLjM0My0zLjQxNiAxLjQ3NC04LjA4NC0xLjk0Mi0xMC40MjctMy40MTYtMi4zNDQtOC4wODQtMS40NzMtMTAuNDI3IDEuOTQyLTYuNDQ1IDkuMzk2LTE0Ljk1NyAxNC40OC0yNi43NDYgMTUuOTYzLTEyLjI0NC0uODk5LTE5LjU1OS0zLjczOC0yMy42NjUtOS4xNjctNi4xNjEtOC4xNS0xMy42NDgtMTIuNzktMjIuMjU0LTEzLjc5LTE1Ljg4NS0xLjg0MS0zMS41MDggOS4zMi00My44MzUgMTkuMzI2LTEyLjcyNC0yNi45MjEtMjAuMjM1LTU2Ljc2NS0yMS4yMjQtODguMjI4aDQwLjI5NWMuOTUyIDAgMS44NjEuMjkyIDIuNjI5Ljg0Nmw0OC40NTMgMzQuOTE4YzIuMzUyIDEuNjk1IDUuMTA4IDIuNTU3IDcuODgzIDIuNTU3IDIuMSAwIDQuMjEtLjQ5NCA2LjE2My0xLjQ5MyA0LjUxOS0yLjMxMyA3LjMyNS02Ljg5NyA3LjMyNS0xMS45NjV2LTIwLjQ2N2MwLTIuNDI0IDItNC4zOTYgNC40NTgtNC4zOTZoMTQuMzQ5YzE0LjAyNSAwIDI1LjQzNi0xMS4zNyAyNS40MzYtMjUuMzQ1di0zMi4wMDdjOC45MjcgNS41MDUgMjMuMDY2IDEwLjM5MiAzNC41NzYgMTAuMDc5IDEyLjQ0NiAwIDI0LjgzMy0zLjcxMiAzNS40OTQtMTEuMDM0IDEzLjkxNC05LjU1NiAyMy40OTQtMjQuNDcyIDI2LjI4NS00MC45MjMuMzYyLTIuMTM2LjY3OS00LjMzNi45NTEtNi41ODNoMTIuOTg1YzIuNDU4IDAgNC40NTcgMS45NzIgNC40NTcgNC4zOTZ2MjAuNDY3YzAgNS4wNjcgMi44MDcgOS42NTIgNy4zMjUgMTEuOTY1IDMuODEyIDEuNzg0IDguNDU3IDIuMzg5IDE0LjA0NS0xLjA2M2wzMC44NzQtMjIuMjQ5Yy0xLjE5MyAxMS42MTUtNC4zMTcgMjMuODM2LTE4LjU0MyAzOC4wMzMtNi42ODEgNi44MDEtMTAuNTE2IDE1Ljg4Ni0xMC43MiAyNS4yMTNoLTg0LjMzNWMtMTQuMDI1IDAtMjUuNDM2IDExLjM3LTI1LjQzNiAyNS4zNDV2My4yNDJjLTEzLjkyNCA1LjMwOC0yNS4wNzIgMTcuMDI0LTMwLjA2OCAzMS43ODItMS4wODkgMy4yMTgtMi43OTQgOC42OTktNC4zNzggMTMuOTM0LTEuMjExIDMuOTYxIDEuMDE4IDguMTU0IDQuOTc5IDkuMzY1IDMuMDIuODQ4IDcuMjk2LS4xOTggOS4zNjUtNC45NzkgMS4wNjMtMy40NzggMi41MjEtOC4zMjggNC4yNDMtMTMuNTExIDIuODg4LTguNTMyIDguNi0xNS42MSAxNS44Ni0xOS45NzV2MTAzLjg2MmMwIDEzLjk3NSAxMS40MTEgMjUuMzQ0IDI1LjQzNiAyNS4zNDRoMTQuMzQ5YzIuNDU4IDAgNC40NTcgMS45NzIgNC40NTcgNC4zOTZ2MjAuNDY2YzAgNS4wNjcgMi44MDcgOS42NTEgNy4zMjUgMTEuOTY1IDEuOTUzIDEgNC4wNjMgMS40OTMgNi4xNjQgMS40OTMgMi43NzUgMCA1LjUzMi0uODYyIDcuODgzLTIuNTU2bDM0LjQ4OC0yNC44NTNjNi4zMjQgOS44MTggMTMuODQ5IDE5LjAxIDIxLjE4IDI3LjkzN3ptNzAuMDM4LTY0LjE5MWMwIDUuNzA0LTQuNjgyIDEwLjM0NC0xMC40MzYgMTAuMzQ0aC02NC4xODZjLTQuMTIgMC04LjA2MiAxLjI3Mi0xMS4zOTkgMy42NzhsLTQ2LjA1NSAzMy4xODl2LTE3LjQ3MWMwLTEwLjY5NS04LjcyOS0xOS4zOTYtMTkuNDU3LTE5LjM5NmgtMTQuMzQ5Yy01Ljc1NCAwLTEwLjQzNi00LjY0MS0xMC40MzYtMTAuMzQ0di0xMjMuNzJjMC01LjcwNCA0LjY4Mi0xMC4zNDUgMTAuNDM2LTEwLjM0NWg5Mi42MzVjLjAwOCAwIC4wMTUuMDAyLjAyMy4wMDIuMDExIDAgLjAyMi0uMDAyLjAzMy0uMDAyaDYyLjc1NmM1Ljc1NCAwIDEwLjQzNiA0LjY0MSAxMC40MzYgMTAuMzQ1djEyMy43MnptMTkuNDctMTg0LjQxNmMwIDE1LjIzNi00LjU5NyAyOS43NTctMTMuMDU2IDQxLjczMi00LjQ5MS0zLjk2Ni0xMC4zOTEtNi4zODEtMTYuODUtNi4zODFoLTU2LjEwNmMuMi01LjQxNyAyLjQ4LTEwLjY5NyA2LjM2Mi0xNC42NDggMjEuMTIzLTIxLjA3OSAyMi40MDctMzkuNzU5IDIzLjQzOC01NC43NjguMTI2LTEuODQ0LjI1My0zLjYxNS40MDktNS4zMjdsMS42MjYtMS4xNzJjLjc2OS0uNTU0IDEuNjc4LS44NDcgMi42My0uODQ3aDM2LjA5MmM5Ljg3OCAxMS41NjQgMTUuMzUxIDI2LjE4MSAxNS40NTUgNDEuNDExem0xMi42NC01Ni40MTFoLTY0LjE4NmMtNC4xMTkgMC04LjA2MSAxLjI3MS0xMS4zOTkgMy42NzdsLTQuNDgxIDMuMjI5Yy0uMDE3LjAxMi0uMDM0LjAyNC0uMDUxLjAzNmwtNDEuNTIzIDI5LjkyNHYtMTcuNDcxYzAtMTAuNjk1LTguNzI5LTE5LjM5Ni0xOS40NTctMTkuMzk2aC0xNC4zNDljLTUuNzU0IDAtMTAuNDM2LTQuNjQxLTEwLjQzNi0xMC4zNDR2LTI4LjA2NWMwLTQuMTQyLTMuMzU4LTcuNS03LjUtNy41cy03LjUgMy4zNTgtNy41IDcuNXYyOC4wNjVjMCA5LjExNSA0Ljg1NiAxNy4xMTggMTIuMTIzIDIxLjU4NC0uMjg2IDIuNjk0LS42MzYgNS4zMjEtMS4wNjMgNy44MzYtMi4xMTUgMTIuNDcyLTkuNDAxIDIzLjc5NS0xOS45ODggMzEuMDY2LTE4LjY3NyAxMy4xNDYtNDMuODQyIDkuODI3LTYxLjU3OC00Ljg1MnYtNjcuODE1YzE2LjA5Mi0yMS4yMjMgOC4wNDEtNTQuOTgxLTguODcyLTc0LjY3IDI0LjE0NC04LjY2IDUyLjE5MS0xMy41NDEgNzkuMzc3LTEyLjk2OXYzNi43NTVjMCA0LjE0MiAzLjM1OCA3LjUgNy41IDcuNXM3LjUtMy4zNTggNy41LTcuNXYtNjAuNjU2YzAtNS43MDQgNC42ODItMTAuMzQ0IDEwLjQzNi0xMC4zNDRoMTU1LjQ0NmM1Ljc1NCAwIDEwLjQzNiA0LjY0MSAxMC40MzYgMTAuMzQ0djEyMy43MjFjLjAwMSA1LjcwNC00LjY4MSAxMC4zNDUtMTAuNDM1IDEwLjM0NXoiLz48cGF0aCBkPSJtNDI2LjMwOCA0OS43NTNoLTM4LjgyNXYtMTIuNzUzYzAtNC4xNDItMy4zNTgtNy41LTcuNS03LjVzLTcuNSAzLjM1OC03LjUgNy41djEyLjc1M2gtMzguODI1Yy00LjE0MiAwLTcuNSAzLjM1OC03LjUgNy41czMuMzU4IDcuNSA3LjUgNy41aDE1LjU1MWMzLjYwMSAxNS45NjEgMTAuNzI0IDMwLjYzOSAyMC42NDQgNDMuMTIzLTcuNTkxIDcuMjQ3LTE2LjQ3MiAxMy4yNTUtMjYuMzc1IDE3LjY2OWwtMTAuMzMzIDQuNjA1Yy0zLjc4NCAxLjY4Ni01LjQ4NCA2LjEyLTMuNzk4IDkuOTAzIDEuMjQ0IDIuNzkyIDMuOTg0IDQuNDQ5IDYuODU1IDQuNDQ5IDEuMDIgMCAyLjA1Ny0uMjA5IDMuMDQ4LS42NTFsMTAuMzMzLTQuNjA1YzExLjM5OS01LjA4IDIxLjYzNS0xMS45NzcgMzAuNC0yMC4yOTMgOC43NjUgOC4zMTYgMTkuMDAxIDE1LjIxMyAzMC40IDIwLjI5M2wxMC4zMzMgNC42MDVjMi42MzYgMS4wOTIgNy41OC43ODYgOS45MDMtMy43OTggMS42ODYtMy43ODMtLjAxNC04LjIxNy0zLjc5OC05LjkwM2wtMTAuMzMzLTQuNjA1Yy05LjkwNC00LjQxMy0xOC43ODQtMTAuNDIyLTI2LjM3NS0xNy42NjkgOS45Mi0xMi40ODQgMTcuMDQyLTI3LjE2MiAyMC42NDMtNDMuMTIzaDE1LjU1MWM0LjE0MiAwIDcuNS0zLjM1OCA3LjUtNy41cy0zLjM1Ny03LjUtNy40OTktNy41em0tNDYuMzI1IDQ2LjY5M2MtNy4wMjgtOS4zODctMTIuMjcyLTIwLjExMy0xNS4zMzUtMzEuNjkzaDMwLjY2OWMtMy4wNjMgMTEuNTgtOC4zMDYgMjIuMzA2LTE1LjMzNCAzMS42OTN6Ii8+PHBhdGggZD0ibTY0Ljk4MyAyNDUuMDE3YzMuODc2IDEuNDYyIDguMjA0LS40OTQgOS42NjUtNC4zNjlsNi41MDktMTcuMjQ3aDQzLjk0NWw2LjU3NyAxNy4yNjljMS4xNCAyLjk5MyAzLjk4OCA0LjgzMyA3LjAxIDQuODMzLjg4NyAwIDEuNzktLjE1OSAyLjY2OC0uNDkzIDMuODcxLTEuNDc0IDUuODEzLTUuODA3IDQuMzM5LTkuNjc4bC0zMy43OTQtODguNzMyYy0uMDIyLS4wNTctLjA0NC0uMTE0LS4wNjctLjE3MS0xLjQ3Mi0zLjU5Ny00LjkzNC01LjkyMy04LjgyLTUuOTI3LS4wMDQgMC0uMDA2IDAtLjAxIDAtMy44ODEgMC03LjM0NCAyLjMxOS04LjgyMiA1LjkwOS0uMDI4LjA2OC0uMDU1LjEzNy0uMDgyLjIwN2wtMzMuNDg3IDg4LjczNmMtMS40NjMgMy44NzMuNDkzIDguMjAxIDQuMzY5IDkuNjYzem0zOC4wNDUtNzkuNTczIDE2LjM2MSA0Mi45NTdoLTMyLjU3MnoiLz48cGF0aCBkPSJtMzk0Ljg4NiAyOTNoLTM0Ljg5MWMtNC4xNDIgMC03LjUgMy4zNTgtNy41IDcuNXMzLjM1OCA3LjUgNy41IDcuNWg5Ljk0NXYyMy41aC0yOS44MzNjMS43NDMtMy41NDkgMi43MjQtNy41MzcgMi43MjQtMTEuNzUgMC0xNC43NS0xMi0yNi43NS0yNi43NS0yNi43NWgtMjEuNjU2Yy00LjE0MiAwLTcuNSAzLjM1OC03LjUgNy41czMuMzU4IDcuNSA3LjUgNy41aDIxLjY1NmM2LjQ3OSAwIDExLjc1IDUuMjcxIDExLjc1IDExLjc1cy01LjI3MSAxMS43NS0xMS43NSAxMS43NWgtMjQuMDYzYy00LjE0MiAwLTcuNSAzLjM1OC03LjUgNy41czMuMzU4IDcuNSA3LjUgNy41aDI0LjA2M2M2LjQ3OSAwIDExLjc1IDUuMjcxIDExLjc1IDExLjc1IDAgNi41ODktNS4xNjEgMTEuNzUtMTEuNzUgMTEuNzUtMTAuMzYyIDAtMjIuMTI1LTEuMTY4LTMwLjc5MS05LjgzNC0yLjkyOS0yLjkyOS03LjY3OC0yLjkyOS0xMC42MDYgMC0yLjkyOSAyLjkyOS0yLjkyOSA3LjY3OCAwIDEwLjYwNiAxMi42MTEgMTIuNjExIDI4Ljc0OCAxNC4yMjggNDEuMzk3IDE0LjIyOCAxNC43NSAwIDI2Ljc1LTEyIDI2Ljc1LTI2Ljc1IDAtNC4yMTMtLjk4MS04LjIwMS0yLjcyNC0xMS43NWgyOS44MzN2MzFjMCA0LjE0MiAzLjM1OCA3LjUgNy41IDcuNXM3LjUtMy4zNTggNy41LTcuNXYtNjkuNWg5Ljk0NWM0LjE0MiAwIDcuNS0zLjM1OCA3LjUtNy41cy0zLjM1Ny03LjUtNy40OTktNy41eiIvPjwvZz48L2c+PC9zdmc+" />
+                                    <p>Defina los idiomas que hayas estudiado, aprendido y dominado</p>
+                                    <button class="btn text-primary" id="btnLang">
+                                        <i class="far fa-plus"></i> Añadir
+                                    </button>
+                                </div>
+                                <%}%>
+                                <%} else{%>
+                                    <div class="card mb-4">
+                                        <div class="row m-0">
+                                            <div class="col-md-3 text-center bg-primary">
+                                                <div class="card-body text-white" style="position: relative; top: 50%; -webkit-transform: translateY(-50%);
+                                                        -ms-transform: translateY(-50%); transform: translateY(-50%);">
+                                                    <div class="h5 font-weight-normal">Idiomas</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="card-body">
+                                                    <div class="row" id="">
+                                                        <% candidateData.Idiomas.split(".").forEach(lang => { 
+                                                            lang.replaceAll(" ", "")
+                                                            if(lang === "" || lang === " "){
+                                                                return delete lang
+                                                            }
+                                                            if(lang.toUpperCase().includes('INTERMEDIO')){
+                                                                lang = lang + " (leo, escribo y converso)"
+                                                            } else if(lang.toUpperCase().includes('BASICO')){
+                                                                lang = lang + " (leo y escribo)"
+                                                            } else{
+                                                                lang = lang + " (leo, escribo, converso con fluides y comprendo)"
+                                                            }
+                                                            %>
+                                                    <div class="col-md-6 mb-2 ">
+                                                        <div class="card mb-0 border rounded bg-white text-dark text-center">
+                                                            <div class="card-body">
+                                                                <%= lang %>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <%}) %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <%if(req.user.userType === 'Candidate'){%>
+                                <div class="text-center row">
+                                    <button class="btn text-primary col-6" id="btnLang">
+                                        <i class="far fa-plus"></i> Añadir
+                                    </button>
+                                    <form action="/defineLanguages/redirectTo=<%= req.originalUrl.replaceAll('/', '*') %>" class="col-6" method="POST">
+                                        <button class="btn text-danger" type="submit">
+                                            <i class="fal fa-trash-alt"> </i> Borrar
+                                        </button>
+                                    </form>
+                                </div>
+                                <%}%>
+                                <%}%>
+                            </div>
+                        </div>
+                        <%} else if(req.params.tab === 'Education'){%>
+                        <%
+                            var prof = []
+                            candidateData2.forEach(data =>{
+                                if(data.Titulo === "Tecnico" || data.Titulo === "Grado" || data.Titulo === "Maestria" || data.Titulo === "Doctorado" ||
+                                data.Titulo === "Bachiller"){
+                                    prof.push(data)
+                                }
+                            })
+                            if(prof.length === 0) {%>
+
+                        <%if(req.user.userType === 'Candidate'){%>
+                        <div class="text-center">
+                            <img width="100" height="100" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCINCgkgdmlld0JveD0iMCAwIDUwMS4zMzMgNTAxLjMzMyIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTAxLjMzMyA1MDEuMzMzOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8cG9seWdvbiBzdHlsZT0iZmlsbDojRTE0QTRBOyIgcG9pbnRzPSIxNTUuMTg1LDM5NC42NjcgMTQ1LjU4NSw0NTQuNCAxNjIuNjUxLDQzOS40NjcgMTg3LjE4NSw0NTcuNiAxNzguNjUxLDQwNi40IAkiLz4NCgk8cG9seWdvbiBzdHlsZT0iZmlsbDojRTE0QTRBOyIgcG9pbnRzPSIxMjkuNTg1LDM4NCA3Ni4yNTEsMzkzLjYgOTguNjUxLDM5Ny44NjcgOTAuMTE4LDQxMS43MzMgMTU0LjExOCwzOTQuNjY3IAkiLz4NCjwvZz4NCjxwYXRoIHN0eWxlPSJmaWxsOiMzQTU1Njk7IiBkPSJNMzgzLjQ1MSwyNzYuMjY3Yy04Mi4xMzMsNjQtMTg2LjY2Nyw2NC0yNjguOCwwYzAtNjAuOCwwLTEyMS42LDAtMTgzLjQ2N2M4OS42LDAsMTc5LjIsMCwyNjguOCwwDQoJQzM4My40NTEsMTU0LjY2NywzODMuNDUxLDIxNS40NjcsMzgzLjQ1MSwyNzYuMjY3eiIvPg0KPHBvbHlnb24gc3R5bGU9ImZpbGw6IzYzNzg4ODsiIHBvaW50cz0iMTMuMzE4LDk0LjkzMyAyNjAuNzg1LDE5NS4yIDQ4My43MTgsODguNTMzIDI1MC4xMTgsMCAiLz4NCjxwYXRoIHN0eWxlPSJmaWxsOiMzQTU1Njk7IiBkPSJNNDg1Ljg1MSwxODguOGMtMi4xMzMsMC00LjI2Ny0yLjEzMy00LjI2Ny00LjI2N1Y5Mi44YzAtNi40LTcuNDY3LTcuNDY3LTguNTMzLTguNTMzbC0yMTcuNiw4LjUzMw0KCWwwLDBjLTIuMTMzLDAtNC4yNjctMi4xMzMtNC4yNjctNC4yNjdzMi4xMzMtNC4yNjcsNC4yNjctNC4yNjdsMjE4LjY2Ny04LjUzM2wwLDBjNS4zMzMsMS4wNjcsMTYsNS4zMzMsMTYsMTcuMDY3djkxLjczMw0KCUM0OTAuMTE4LDE4Ni42NjcsNDg3Ljk4NSwxODguOCw0ODUuODUxLDE4OC44eiIvPg0KPGc+DQoJPHBhdGggc3R5bGU9ImZpbGw6I0ZFQzY1NjsiIGQ9Ik01MDAuNzg1LDI1NC45MzNsLTguNTMzLTgyLjEzM2MwLTIuMTMzLTEuMDY3LTMuMi0zLjItMy4yaC01LjMzM2MtMS4wNjcsMC0zLjIsMS4wNjctMy4yLDMuMg0KCQlsLTguNTMzLDgyLjEzM2MtMS4wNjcsMTEuNzMzLDUuMzMzLDIxLjMzMywxNC45MzMsMjEuMzMzQzQ5NS40NTEsMjc2LjI2Nyw1MDEuODUxLDI2Ni42NjcsNTAwLjc4NSwyNTQuOTMzeiIvPg0KCTxlbGxpcHNlIHN0eWxlPSJmaWxsOiNGRUM2NTY7IiBjeD0iNDg1Ljg1MSIgY3k9IjE1MS40NjciIHJ4PSI4LjUzMyIgcnk9IjguNTMzIi8+DQo8L2c+DQo8cGF0aCBzdHlsZT0iZmlsbDojQzJDNkM2OyIgZD0iTTQwNC43ODUsNDY0YzAsMC0yMi40LDM0LjEzMy03Mi41MzMsMzcuMzMzYzAsMC0xODQuNTMzLTE0Mi45MzMtMzE2LjgtMTQyLjkzMw0KCWMwLDAsMy4yLTIzLjQ2NywzMi0zNC4xMzNsMjE3LjYsNTguNjY3TDQwNC43ODUsNDY0eiIvPg0KPHBhdGggc3R5bGU9ImZpbGw6I0U1RUFFOTsiIGQ9Ik00MjEuODUxLDQzOS40NjdjLTE3LjA2NywzNy4zMzMtNTIuMjY3LDU0LjQtNzcuODY3LDM3LjMzM2MtMjUuNi0xNi0zMy4wNjctNTkuNzMzLTE2LTk3LjA2Nw0KCWMxNy4wNjctMzcuMzMzLDUyLjI2Ny01NC40LDc3Ljg2Ny0zNy4zMzNDNDMxLjQ1MSwzNTguNCw0MzguOTE4LDQwMi4xMzMsNDIxLjg1MSw0MzkuNDY3eiIvPg0KPHBhdGggc3R5bGU9ImZpbGw6Izg4OEM4QzsiIGQ9Ik0zNzEuNzE4LDM4NGMyMS4zMzMtMi4xMzMsMjguOCwzNi4yNjctMi4xMzMsNTAuMTMzbC03Ni44LTI2LjY2Nw0KCUMyOTIuNzg1LDQwNy40NjcsMzUxLjQ1MSwzODYuMTMzLDM3MS43MTgsMzg0eiIvPg0KPHBhdGggc3R5bGU9ImZpbGw6I0JBQkFCQTsiIGQ9Ik0zODYuNjUxLDQ3Ny44NjdjMCwwLTU3LjYsNy40NjctNDYuOTMzLTUxLjJjMi4xMzMtMTMuODY3LDEwLjY2Ny0zNS4yLDMyLTQyLjY2N2wtOTIuOC0xNg0KCWwyOS44NjcsODQuMjY3bDM1LjIsMjQuNTMzQzM0Mi45MTgsNDc2LjgsMzYyLjExOCw0OTEuNzMzLDM4Ni42NTEsNDc3Ljg2N3oiLz4NCjxwYXRoIHN0eWxlPSJmaWxsOiNFMEUwREY7IiBkPSJNMzI3Ljk4NSwzNzkuNzMzYzExLjczMy0yNi42NjcsMzMuMDY3LTQyLjY2Nyw1NC40LTQzLjczM2MtMTc4LjEzMy0yLjEzMy0zNDIuNC05MC42NjctMzQyLjQtOTAuNjY3DQoJcy0yNi42NjctNi40LTM2LjI2NywzMmMtMTEuNzMzLDQyLjY2NywxMS43MzMsNTcuNiwxMS43MzMsNTcuNmMxMzUuNDY3LDYuNCwyODMuNzMzLDEwOC44LDMyNC4yNjcsMTM4LjY2Nw0KCUMzMTYuMjUxLDQ1NC40LDMxMS45ODUsNDE0LjkzMywzMjcuOTg1LDM3OS43MzN6Ii8+DQo8cGF0aCBzdHlsZT0iZmlsbDojRjE2RDZFOyIgZD0iTTIyOC43ODUsMzE1LjczM2MwLDAtODIuMTMzLDM5LjQ2Ny00MC41MzMsOTZMMTQyLjM4NSwzOTAuNGMwLDAtMTkuMi01Ny42LDQ0LjgtODUuMzMzDQoJTDIyOC43ODUsMzE1LjczM3oiLz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjwvc3ZnPg0K" />
+                            <p>
+                                Defina su profesion principal y aquellos estudios posteriores a esta profesion (ej:
+                                grado,
+                                posgrado,
+                                etc. En
+                                caso de haberlos realizado)
+                            </p>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn text-primary" id="btnForm2">
+                                <i class="far fa-plus"></i> Añadir
+                            </button>
+                        </div>
+                        <%}%>
+                        <%} else{%>
+                            <% prof.forEach(data => {%>
+                            <div class="card mb-4">
+                                <div class="row m-0">
+                                    <div class="col-md-3 text-center bg-primary">
+                                        <div class="card-body text-white" style="position: relative; top: 50%; -webkit-transform: translateY(-50%);
+                                                -ms-transform: translateY(-50%); transform: translateY(-50%);">
+                                            <p class="m-0"><%= data.PeriodoInicio %> - <%= data.PeriodoFin %></p>
+                                            <div class="h5 font-weight-normal"><%= data.Titulo %></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="card-body">
+                                            <div class="h5 font-weight-normal"><%= data.Titulo %> en <%= data.Nombre %></div>
+                                            <p class="text-muted h6"><%= data.Lugar %></p>
+                                            <!--<div id="descriptionContainer<%=i%>">
+                                                    </div>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <%
+                        }) %>
+                        <%if(req.user != undefined && req.user.userType === 'Candidate'){%>
+                        <div class="col-md-12 text-center row">
+                            <button class="btn text-primary col-6" id="btnForm2">
+                                <i class="far fa-plus"></i> Añadir
+                            </button>
+                            <form action="/defineProfessionalForm/redirectTo=<%= req.originalUrl.replaceAll('/', '*') %>" class="col-6" method="POST">
+                                <button class="btn text-danger" type="submit">
+                                    <i class="fal fa-trash-alt"> </i> Borrar todo
+                                </button>
+                            </form>
+                        </div>
+                        <%}%>
+                                    
+                        <%}%>
+                        <%} else if(req.params.tab === 'complementaryEducation'){%>
+                        <%
+                            var comp = []
+                            candidateData2.forEach(data =>{
+                                if(data.Titulo === "Curso" || data.Titulo === "Diplomado"){
+                                    comp.push(data)
+                                }
+                            })
+                            if(comp.length === 0) {%>
+
+                        <%if(req.user != undefined && req.user.userType === 'Candidate'){%>
+                        <div class="text-center">
+                            <p>
+                                Defina aquellos estudios realizados complementarios a su profesion (cursos, diplomados,
+                                etc.)
+                            </p>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn text-primary" id="btnForm3">
+                                <i class="far fa-plus"></i> Añadir
+                            </button>
+                        </div>
+                        <%}%>
+                    
+                            <%} else{%>
+                        <% comp.forEach(data => {
+                                        if(data.Titulo === "Curso" || data.Titulo === "Diplomado"){
+                                        %>
+                        <div class="card mb-4">
+                            <div class="row m-0">
+                                <div class="col-md-3 text-center bg-primary">
+                                    <div class="card-body text-white" style="position: relative; top: 50%; -webkit-transform: translateY(-50%);
+                                                -ms-transform: translateY(-50%); transform: translateY(-50%);">
+                                        <p class="m-0"><%= data.PeriodoInicio %> - <%= data.PeriodoFin %></p>
+                                        <%if(data.Titulo === "Curso"){%>
+                                        <div class="h5 font-weight-normal">Certificado</div>
+                                        <%} else{%>
+                                        <div class="h5 font-weight-normal">Diplomado</div>
+                                        <%}%>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="card-body">
+                                                    <div class="h5 font-weight-normal">
+                                                        <%if(data.Titulo === "Curso"){%>
+                                        <%= data.Titulo %> de <%= data.Nombre %>
+                                        <%} else{%>
+                                        <%= data.Titulo %> en <%= data.Nombre %>
+                                        <%}%>
+                                                    </div>
+                                                    <p class="text-muted h6"><%= data.Lugar %></p>
+                                        <!--<div id="descriptionContainer<%=i%>">
+                                                    </div>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <%}}) %>
+
+                        <%if(req.user != undefined && req.user.userType === 'Candidate'){%>
+
+                        <div class="col-md-12 text-center row">
+                            <button class="btn text-primary col-6" id="btnForm3">
+                                <i class="far fa-plus"></i> Añadir
+                            </button>
+                            <form action="/defineComplementaryForm/redirectTo=<%= req.originalUrl.replaceAll('/', '*') %>" class="col-6" method="POST">
+                                <button class="btn text-danger" type="submit">
+                                    <i class="fal fa-trash-alt"> </i> Borrar todo
+                                </button>
+                            </form>
+                        </div>
+                        <%}%>
+                                        
+                            <%}%>
+
+                        <%} else{%>
+
+                        <%if(candidateData3.length === 0) {%>
+
+                        <%if(req.user != undefined && req.user.userType === 'Candidate'){%>
+                        <div class="text-center">
+                        <img width="100" height="100" src="data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfNSIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgNjQgNjQiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgNjQgNjQiIHdpZHRoPSI1MTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGc+PGc+PGc+PHBhdGggZD0ibTUwIDE3LTYgNi02IDYtNi02LTMtMy03Ljk1IDcuOTVjLjUzIDEuNDQuOTUgMy4xNy45NSA1LjA1bC0zIDF2LjU5YzAgLjktLjM2IDEuNzctMSAyLjQxLS41NC41NC0xLjI1Ljg4LTIgLjk3djMuMDNjMS4yNi41IDIuMzQgMS4zMSAzLjE3IDIuMzFsMi40My0uODhjLjE1LS40My4zMy0uODUuNTMtMS4yNmwtLjc0LTEuNTMgNC4yNS00LjI1IDEuNTMuNzRjLjQxLS4yLjgzLS4zOCAxLjI2LS41M2wuNTctMS42aDMgM2wuNTcgMS42Yy40My4xNS44NS4zMyAxLjI2LjUzbDEuMTctLjU2di0uMDFsLjM2LS4xNyA0LjI1IDQuMjUtLjc0IDEuNTNjLjIuNDEuMzguODMuNTMgMS4yNmwxLjYuNTd2NmwtMS42LjU3Yy0uMTUuNDMtLjMzLjg1LS41MyAxLjI2bC43NCAxLjUzLTQuMjUgNC4yNS0uMzYtLjE3di0uMDFsLTEuMTctLjU2Yy0uNDEuMi0uODMuMzgtMS4yNi41M2wtLjU3IDEuNmgtNHYyLjAxYzAgMS4xLS44OSAxLjk5LTEuOTkgMS45OWg4Ljk5IDYgNiA2di01MXoiIGZpbGw9IiNjY2QxZDkiLz48L2c+PGc+PHBhdGggZD0ibTYyIDItMiAxMi0zLjUtMy41LS41LjUtNiA2LTYgNi02IDYtNi02LTMtMy03Ljk1IDcuOTVjLS44OC0yLjM5LTIuMDUtMy45NS0yLjA1LTMuOTUgMi4yMSAwIDQtMS43OSA0LTRsNi02IDkgOSAxNS41LTE1LjUtMy41LTMuNXoiIGZpbGw9IiNmZjgyNmUiLz48L2c+PGc+PHBhdGggZD0ibTQ0IDQzdjZsLTEuNi41N2MtLjE1LjQzLS4zMy44NS0uNTMgMS4yNmwuNzQgMS41My00LjI1IDQuMjUtLjM2LS4xN3YtLjAxbC0xLjE3LS41NmMtLjQxLjItLjgzLjM4LTEuMjYuNTNsLS41NyAxLjZoLTRjMC0xLjEtLjktMi0yLTJoLTFsLS40Ni0uOTNjLS4zMy0uNjYtMS0xLjA3LTEuNzQtMS4wNy0uNTEgMC0xIC4yLTEuMzcuNTdsLTEuNDMgMS40M2gtMnYtNy42MWMwLTEuNjMtLjUtMy4xNy0xLjM3LTQuNDYtLjE1LS4yMS0uMy0uNDItLjQ2LS42MmwyLjQzLS44OGMuMTUtLjQzLjMzLS44NS41My0xLjI2bC0uNzQtMS41MyA0LjI1LTQuMjUgMS41My43NGMuNDEtLjIuODMtLjM4IDEuMjYtLjUzbC41Ny0xLjZoMyAzbC41NyAxLjZjLjQzLjE1Ljg1LjMzIDEuMjYuNTNsMS4xNy0uNTZ2LS4wMWwuMzYtLjE3IDQuMjUgNC4yNS0uNzQgMS41M2MuMi40MS4zOC44My41MyAxLjI2em0tNSAzYzAtMy44Ny0zLjEzLTctNy03cy03IDMuMTMtNyA3IDMuMTMgNyA3IDcgNy0zLjEzIDctN3oiIGZpbGw9IiNmZmM3MjkiLz48L2c+PGc+PHBhdGggZD0ibTMyIDM5YzMuODcgMCA3IDMuMTMgNyA3cy0zLjEzIDctNyA3LTctMy4xMy03LTcgMy4xMy03IDctN3ptMyA3YzAtMS42Ni0xLjM0LTMtMy0zcy0zIDEuMzQtMyAzIDEuMzQgMyAzIDMgMy0xLjM0IDMtM3oiIGZpbGw9IiNmY2Q3NzAiLz48L2c+PGc+PHBhdGggZD0ibTMxIDU4djIuMDFjMCAxLjEtLjg5IDEuOTktMS45OSAxLjk5aC0yLjAxYy0xLjI1IDAtMi42MSAwLTQgMHYtNmwxLjQzLTEuNDNjLjM3LS4zNy44Ni0uNTcgMS4zNy0uNTcuNzQgMCAxLjQxLjQxIDEuNzQgMS4wN2wuNDYuOTNoMWMxLjEgMCAyIC45IDIgMnoiIGZpbGw9IiNmMGQwYjQiLz48L2c+PGc+PHBhdGggZD0ibTExIDU2LjAzYy4xNC0uMDIuMjctLjAzLjQxLS4wM2g5LjU5IDJ2NmMtNS4wMyAwLTEwLjUzIDAtMTIuODggMC0xLjM2IDAtMi42Ni0uNTQtMy42My0xLjUxbC0uMDQtLjA0Yy0uOTMtLjkzLTEuNDUtMi4xOS0xLjQ1LTMuNTF2LTExLjg4YzAtMS4zOS40OC0yLjcxIDEuMzEtMy43NWwxLjY3Ljk2YzEuODcgMS4wNyAzLjAyIDMuMDYgMy4wMiA1LjIxdjguNTJ6IiBmaWxsPSIjYjRkZDdmIi8+PC9nPjxnPjxwYXRoIGQ9Im0xNi4zNiAxN2MuNzEtLjYyIDEuNjMtMSAyLjY0LTEgMi4yMSAwIDQgMS43OSA0IDRzLTEuNzkgNC00IDRoLTItNWMtMS4xIDAtMiAuOS0yIDJ2MmMtLjU1IDAtMS4wNS4yMi0xLjQxLjU5LS4zNy4zNi0uNTkuODYtLjU5IDEuNDF2LjE3YzAgLjUzLjIxIDEuMDQuNTkgMS40MmwuODIuODJjLjM4LjM4LjU5Ljg5LjU5IDEuNDJ2NS4xN2wtMy43My0yLjhjLTEuMzUtMS0yLjQxLTIuMy0zLjE0LTMuNzZzLTEuMTMtMy4xLTEuMTMtNC43N2MwLTUuODkgNC43OC0xMC42NyAxMC42Ny0xMC42N3oiIGZpbGw9IiM2NTZkNzgiLz48L2c+PGc+PHBhdGggZD0ibTE2IDM3Ljk3djMuMDNsLTIgMi00LTR2LTUuMTdjMC0uNTMtLjIxLTEuMDQtLjU5LTEuNDJsLS44Mi0uODJjLS4zOC0uMzgtLjU5LS44OS0uNTktMS40MnYtLjE3YzAtLjU1LjIyLTEuMDUuNTktMS40MS4zNi0uMzcuODYtLjU5IDEuNDEtLjU5di0yYzAtMS4xLjktMiAyLTJoNSAyczEuMTcgMS41NiAyLjA1IDMuOTVjLjUzIDEuNDQuOTUgMy4xNy45NSA1LjA1bC0zIDF2LjU5YzAgLjktLjM2IDEuNzctMSAyLjQxLS41NC41NC0xLjI1Ljg4LTIgLjk3eiIgZmlsbD0iI2YwZDBiNCIvPjwvZz48Zz48cGF0aCBkPSJtMjEgNDguMzl2Ny42MWgtOS41OWMtLjE0IDAtLjI3LjAxLS40MS4wM3YtLjAzLTguNTJjMC0yLjE1LTEuMTUtNC4xNC0zLjAyLTUuMjFsLTEuNjctLjk2Yy42NC0uOCAxLjQ4LTEuNDMgMi40Ni0xLjgybDEuMjMtLjQ5IDQgNCAyLTJjMS4yNi41IDIuMzQgMS4zMSAzLjE3IDIuMzEuMTYuMi4zMS40MS40Ni42Mi44NyAxLjI5IDEuMzcgMi44MyAxLjM3IDQuNDZ6IiBmaWxsPSIjYjRkZDdmIi8+PC9nPjwvZz48Zz48Y2lyY2xlIGN4PSIxNyIgY3k9IjI4IiByPSIxIi8+PHBhdGggZD0ibTMyIDU0YzQuNDExIDAgOC0zLjU4OSA4LThzLTMuNTg5LTgtOC04LTggMy41ODktOCA4IDMuNTg5IDggOCA4em0wLTE0YzMuMzA5IDAgNiAyLjY5MSA2IDZzLTIuNjkxIDYtNiA2LTYtMi42OTEtNi02IDIuNjkxLTYgNi02eiIvPjxwYXRoIGQ9Im0zMiA1MGMyLjIwNiAwIDQtMS43OTQgNC00cy0xLjc5NC00LTQtNC00IDEuNzk0LTQgNCAxLjc5NCA0IDQgNHptMC02YzEuMTAzIDAgMiAuODk3IDIgMnMtLjg5NyAyLTIgMi0yLS44OTctMi0yIC44OTctMiAyLTJ6Ii8+PHBhdGggZD0ibTYzLjIxNy43ODQtMTUuMjk4IDIuNTQ5IDQuMTY3IDQuMTY3LTE0LjA4NiAxNC4wODYtOS05LTUuNDIgNS40MmMtLjc3My0xLjc2Ni0yLjUzMi0zLjAwNi00LjU4LTMuMDA2LTEuMTE2IDAtMi4xMzYuMzgtMi45NjkgMWgtMy4zNjRjLTYuNDM0IDAtMTEuNjY3IDUuMjMzLTExLjY2NyAxMS42NjcgMCAzLjY1MiAxLjc0NCA3LjE0MSA0LjY2NyA5LjMzM2wyLjM0IDEuNzU1Yy0yLjQ0MSAxLjE1Ni00LjAwNyAzLjU3Ni00LjAwNyA2LjMwN2wtLjAwMSAxMS44NzhjMCAxLjU5NS42MjEgMy4wOTQgMS43ODYgNC4yNiAxLjE2MiAxLjE2MSAyLjcgMS44IDQuMzMxIDEuOGgxOC44OTcgMjcuOTg3di01MC41ODZsMy42NjcgMy42Njd6bS02MC4yMTcgMjYuODgzYzAtNS4zMzEgNC4zMzctOS42NjcgOS42NjctOS42NjdoMS43NTdjLS4yNy42MTQtLjQyNCAxLjI4OC0uNDI0IDJoMmMwLTEuNjU0IDEuMzQ2LTMgMy0zczMgMS4zNDYgMyAzLTEuMzQ2IDMtMyAzaC0yLTVjLTEuNjU0IDAtMyAxLjM0Ni0zIDN2MS4xNzFjLTEuMTY0LjQxMy0yIDEuNTI1LTIgMi44Mjl2LjE3MWMwIC44MDEuMzEzIDEuNTU1Ljg3OSAyLjEyMmwuODI4LjgyOGMuMTg5LjE4OS4yOTMuNDQxLjI5My43MDh2My4xNzJsLTIuMTM0LTEuNmMtMi40MjEtMS44MTctMy44NjYtNC43MDgtMy44NjYtNy43MzR6bTI0IDMzLjMzM2gtM3YtNC41ODZsMS4xNC0xLjE0Yy40MjctLjQyOCAxLjIzMS0uMjk3IDEuNTAxLjI0NGwuNzQxIDEuNDgyaDEuNjE4Yy41NTIgMCAxIC40NDkgMSAxdjIuMDA5YzAgLjU0Ny0uNDQyLjk5MS0uOTg2Ljk5MXptLTE4LjUyLTE5LjU5Ny0uNTI1LS4zMDFjLjM1OC0uMjc0Ljc1Mi0uNTA5IDEuMTg3LS42ODJsLjYxNy0uMjQ3IDQuMjQxIDQuMjQxIDIuMjA0LTIuMjA0YzIuMzE5IDEuMTgyIDMuNzk2IDMuNTMyIDMuNzk2IDYuMTc1djYuNjE1aC04di03LjUyM2MwLTIuNTAyLTEuMzQ5LTQuODMtMy41Mi02LjA3NHptNy4xMDYtNC40MDNoLTIuNTg2djJoMnYxLjU4NmwtMSAxLTMtM3YtNC43NTdjMC0uODAxLS4zMTMtMS41NTUtLjg3OS0yLjEyMmwtLjgyOC0uODI4Yy0uMTg5LS4xODktLjI5My0uNDQxLS4yOTMtLjcwOHYtLjE3MWMwLS41NTEuNDQ4LTEgMS0xaDF2LTNjMC0uNTUxLjQ0OC0xIDEtMWg1IDEuNDczYy42NTkgMS4wMTYgMi4yOTggMy44NiAyLjUwNiA3LjI4N2wtMi45NzkuOTkydjEuMzA3YzAgLjY0NS0uMjUxIDEuMjUxLS43MDcgMS43MDdzLTEuMDYzLjcwNy0xLjcwNy43MDd6bTcuMDE1IDIuODQzIDMuMjQyLTMuMjQyIDEuMzM1LjYzOC40MzYtLjIxNGMuMzc1LS4xODUuNzYxLS4zNDUgMS4xNDYtLjQ3N2wuNDU4LS4xNTcuNDktMS4zOTFoNC41ODRsLjQ5MSAxLjM5Mi40NTguMTU3Yy4zODUuMTMyLjc3MS4yOTIgMS4xNDYuNDc3bC40MzYuMjE0IDEuMzM1LS42MzggMy4yNDIgMy4yNDItLjYzOSAxLjMzNC4yMTQuNDM1Yy4xODcuMzgxLjM0Ny43NjYuNDc3IDEuMTQ2bC4xNTYuNDU4IDEuMzkyLjQ5MXY0LjU4NWwtMS4zOTMuNDkxLS4xNTYuNDU4Yy0uMTMuMzgtLjI5Ljc2NS0uNDc3IDEuMTQ2bC0uMjE0LjQzNS42MzkgMS4zMzQtMy4yNDIgMy4yNDItMS4zMzUtLjYzOC0uNDM2LjIxNGMtLjM3NS4xODUtLjc2MS4zNDUtMS4xNDYuNDc3bC0uNDU4LjE1Ny0uNDkgMS4zOTFoLTIuNDc2Yy0uNDE0LTEuMTYxLTEuNTE0LTItMi44MTYtMmgtLjM4MmwtLjE4OC0uMzc2Yy0uNTAxLTEuMDAyLTEuNTA4LTEuNjI0LTIuNjI3LTEuNjI0LS43NzMgMC0xLjUzLjMxMy0yLjA3Ny44NmwtMS4xNCAxLjE0aC0uNTg2di02LjYxNWMwLTEuNjU4LS40NTgtMy4yMjYtMS4yNjMtNC41OGwxLjY1NS0uNTkyLjE1Ni0uNDU2Yy4xMy0uMzguMjktLjc2NS40NzctMS4xNDZsLjIxNC0uNDM1em0yMC4zOTkgMTEuMDI3LS4wMjItLjA0N2MuMDA4LS4wMTguMDE1LS4wMzYuMDIyLS4wNTR6bTAtOS42MzljLS4wMDgtLjAxOC0uMDE1LS4wMzYtLjAyMi0uMDU0bC4wMjItLjA0N3ptLTExIDE4Ljc3OHYtMS4wMDloMy43MDhsLjY0NC0xLjgyNmMuMTU4LS4wNjIuMzE1LS4xMjcuNDcxLS4xOTZsLjE3Ny4wODV2My45MzdoLTUuMTgyYy4xMTEtLjMxMi4xODItLjY0Mi4xODItLjk5MXptNy0yLjYyNCA0LTQuMDAxdjcuNjE2aC00em02LTcuNjc3di03LjQxNS0xOC44NzlsNC00djQxLjU4NmgtNHptLTItMTEuMDkyLTQtNC4wMDF2LTUuMjAxbDQtNHptLTYtMy42NzktLjE3OC4wODVjLS4xNTUtLjA2OS0uMzEzLS4xMzQtLjQ3MS0uMTk2bC0uNjQzLTEuODI2aC0yLjcwOHYtNy41ODZsNCA0em0tNi0xLjkzN2gtMi43MDhsLS42NDQgMS44MjZjLS4xNTguMDYyLS4zMTUuMTI3LS40NzEuMTk2bC0xLjc0OS0uODM2LTUuMjQyIDUuMjQ0LjgzNiAxLjc0OGMtLjA3LjE1OC0uMTM2LjMxNS0uMTk3LjQ3M2wtMS4zNzguNDkzYy0uNzAxLS43MTctMS41MTQtMS4zMzYtMi40NDctMS43OTN2LTEuNjAxYy42MzMtLjIxNCAxLjIyLS41NTYgMS43MDctMS4wNDIuODAyLS44MDEgMS4yNTctMS44NTcgMS4yOTEtMi45ODZsMy4wMDItMXYtLjcyMmMwLTEuNzU2LS4zNDMtMy4zODItLjgwMi00Ljc4NGw2LjgwMi02LjgwMiAyIDJ6bS0yMy44MzggMjYuNzQ4Yy0uNzUtLjc1LTEuMTYzLTEuNzQ4LTEuMTYzLTIuODA4bC4wMDEtMTEuODc4YzAtLjg3LjIzMS0xLjY5MS42My0yLjQxNGwuODU2LjQ5MWMxLjU1MS44ODggMi41MTQgMi41NSAyLjUxNCA0LjMzOHY3Ljc3NGMtLjYzMy4yMTQtMS4yMi41NTYtMS43MDcgMS4wNDJsMS40MTQgMS40MTVjLjQ1Ni0uNDU3IDEuMDYzLS43MDggMS43MDctLjcwOGgxMC41ODZ2NGgtMTEuODg0Yy0xLjA5NiAwLTIuMTMzLS40MzEtMi45NTQtMS4yNTJ6bTQzLjgzOCAxLjI1MnYtNDMuNTg2bDQtNHY0Ny41ODZ6bTUuNS01MS45MTQtMTguNSAxOC41LTktOS03LjYgNy42Yy0uMjY1LS41NzMtLjUyOS0xLjA3Mi0uNzY2LTEuNDgzIDEuODExLS42MzIgMy4xMzUtMi4yNjYgMy4zMTktNC4yNDJsNS4wNDctNS4wNDcgOSA5IDE2LjkxNC0xNi45MTQtMi44MzMtMi44MzMgOC43MDItMS40NTEtMS40NSA4LjcwM3oiLz48L2c+PC9nPjwvc3ZnPg==" />
+                        <p>Defina su trayectoria laboral</p>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn text-primary" id="btnForm4">
+                                <i class="far fa-plus"></i> Añadir
+                            </button>
+                        </div>
+                        <%}%>
+                            <%} else{%>
+                        <%  var i = 0
+                            candidateData3.forEach(data => {%>
+                        <div class="card mb-4">
+                            <div class="row m-0">
+                                <div class="col-md-3 text-center bg-primary">
+                                    <div class="card-body text-white" style="position: relative; top: 50%; -webkit-transform: translateY(-50%);
+                                                    -ms-transform: translateY(-50%); transform: translateY(-50%);">
+                                        <p class="m-0"><%= data.PeriodoInicio %> - <%= data.PeriodoFin %></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <div class="h5 font-weight-normal"><%= data.Nombre %></div>
+                                        <p class="text-muted h6"><%= data.CompanyName %></p>
+                                        <div id="descriptionContainer<%=i%>">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <%   i++}) %>
+
+                        <%if(req.user != undefined && req.user.userType === 'Candidate'){%>
+
+                        <div class="col-md-12 text-center row">
+                            <button class="btn text-primary col-6" id="btnForm4">
+                                <i class="far fa-plus"></i> Añadir
+                            </button>
+                            <form action="/defineLaboralExperience/redirectTo=<%= req.originalUrl.replaceAll('/', '*') %>" class="col-6" method="POST">
+                                <button class="btn text-danger" type="submit">
+                                    <i class="fal fa-trash-alt"> </i> Borrar todo
+                                </button>
+                            </form>
+                        </div>
+                        <%}%>
+                            <%}%>
+                        <%}%>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modals-->
+
+<div class="modal fade" id="modalProfilePhoto" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <!--<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Añadir idioma</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>-->
+            <div class="modal-body">
+                <form action="/defineCandidateProfilePhoto/redirectTo=<%= req.originalUrl.replaceAll('/', '*') %>" enctype="multipart/form-data"
+                    class="row g-3 align-items-center justify-content-center" method="POST" id="form8">
+                    <div class="col-md-12">
+                        <p class="text-justify">
+                            Suba su foto de perfil aqui:
+                        </p>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input type="file" class="form-control-file" id="profilePhoto"
+                                name="profilePhoto" accept=".jpg, .jpeg, .png">
+                        </div>
+                    </div>
+                    <button class="btn text-primary text-center">
+                        <i class="far fa-plus"></i> Añadir foto de perfil
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalLang" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <!--<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Añadir idioma</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>-->
+            <div class="modal-body">
+                <form action="/defineLanguages/redirectTo=<%= req.originalUrl.replaceAll('/', '*') %>" class="row g-3 align-items-center justify-content-center"
+                    method="POST" id="form1">
+                    <div class="col-md-12">
+                        <p class="text-justify">
+                            Seleccione el idioma y el nivel de dominio:
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <%
+            var languages = ['Ingles', 'Frances', 'Japones', 'Aleman', 'Ruso']
+            var i = 0
+            %>
+                        <select name="languages" id="languages" class="form-select">
+                            <option value="">Idioma</option>
+                            <%
+                languages.forEach(language => {%>
+                            <option value="<%=language%>"><%=language%></option>
+                            <%i++})%>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <select name="langLevel" id="langLevel" class="form-select">
+                            <option value="">Nivel de dominio</option>
+                            <option value="Basico">Nivel basico (lee y escribe)</option>
+                            <option value="Intermedio">Nivel intermedio (lee, escribe y conversa)</option>
+                            <option value="Avanzado">Nivel avanzado (conversa fluidamente y comprende)
+                            </option>
+                        </select>
+                    </div>
+                    <button class="btn text-primary text-center">
+                        <i class="far fa-plus"></i> Añadir idioma
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalPresentation" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <!--<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Añadir presentacion</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>-->
+            <div class="modal-body">
+                <form action="/definePresentation/redirectTo=<%= req.originalUrl.replaceAll('/', '*') %>" class="row g-3 align-items-center justify-content-center"
+                    method="POST" id="form2">
+                    <div class="col-md-12">
+                        <p class="text-justify">
+                            A continuacion, escriba su presentacion:
+                        </p>
+                    </div>
+                    <div class="col-md-12">
+                        <textarea name="presentation" class="form-control" id="editor"></textarea>
+                    </div>
+                    <button class="btn text-primary text-center">
+                        <i class="far fa-plus"></i> Añadir presentacion
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalSkills" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <!--<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Añadir habilidades</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>-->
+            <div class="modal-body">
+                <form action="/defineSkills/redirectTo=<%= req.originalUrl.replaceAll('/', '*') %>" class="row g-3 align-items-center justify-content-center"
+                    method="POST" id="form3">
+                    <div class="col-md-12">
+                        <p class="text-justify">
+                            A continuacion, elija las habilidades que mas lo definan en el ambito laboral:
+                        </p>
+                    </div>
+                    <%
+        var skills = [
+                     "Aprendizaje rapido", "Creatividad", "Capacidad comunicativa", "Capacidad analitica", "Escuchante", "Eficiente", "Iniciativa", 
+                     "Innovador", "Liderazgo", "Organizacion", "Puntualidad", "Proactividad", "Responsabilidad" , "Solucion a problemas", 
+                     "Trabajo en equipo","Trabajo bajo presion", 
+                     ]
+        var i = 0;
+        skills.forEach(skill => {
+            if(candidateData.Habilidades != null && !candidateData.Habilidades.toUpperCase().includes(skill.toUpperCase())){
+        %>
+                    <div class="col-md-12 mt-0">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="skill<%=i%>"
+                                value="<%=skill%>" name="skills">
+                            <label class="custom-control-label" for="skill<%=i%>"><%=skill%></label>
+                        </div>
+                    </div>
+                    <%}
+        i++
+            })%>
+                    <button class="btn text-primary text-center">
+                        <i class="far fa-plus"></i> Añadir habilidades
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<%
+var months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", 
+"Noviembre", "Diciembre"];
+var titles = ['Bachiller', 'Tecnico', 'Grado', 'Maestria', 'Doctorado']
+var i = 0;
+%>
+<div class="modal fade" id="modalProfessionalForm" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <!--<div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Añadir formacion profesional</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>-->
+                <div class="modal-body">
+                    <form action="/defineProfessionalForm/redirectTo=<%= req.originalUrl.replaceAll('/', '*') %>" class="row g-3" method="POST" id="form4">
+                        <div class="col-md-6 ">
+                            <label for="titles" class="form-label">Titulo obtenido:</label>
+                            <select class="form-select" name="titles" id="titles">
+                                <option value="0" selected>Titulo...</option>
+                                <%titles.forEach(title => {%>
+                                <option value="<%=title%>"><%=title%></option>
+                                <%i++})%>
+                            </select>
+                        </div>
+                        <div class="col-md-6 ">
+                            <label for="titledIn" class="form-label">Titulo obtenido en:</label>
+                            <input type="text" class="form-control" id="titledIn"
+                                placeholder="Introduzca el nombre de la carrera" name="titledIn"
+                                <%for(let i=0; i < candidateData2.length; i++){%> <%if(candidateData2[i].Titulo === 'Tecnico' || candidateData2[i].Titulo === 'Grado' || candidateData2[i].Titulo === 'Maestria' || 
+                        candidateData2[i].Titulo === 'Doctorado'){%> value="<%= candidateData2[i].Nombre %>"
+                                readonly <%break}%> <%}%>    
+                >
+            </div>
+            <div class="col-md-12 ">
+                <label for="titledIn" class="form-label">Universidad o instituto:</label>
+                <input type="text" class="form-control" id="place"
+                    placeholder="Introduzca el lugar donde se titulo" name="place">
+            </div>
+            <div class="col-md-12 row mt-3">
+                <label for="Lname" class="form-label">Fecha de inicio:</label>
+                <div class="col-md-6">
+                    <select class="form-select" name="beginMonth" id="beginMonth">
+                        <option value="0" selected>Año</option>
+                        <%months.forEach(month => {%> <option value="<%=month%>"><%= month %></option>
+                            <% i++ })%>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <select class="form-select" name="beginYear" id="beginYear">
+                                <option value="0" selected>Año</option>
+                                <% for(let i = 0; i < 100; i++){ %>
+                                <option value="<%= Number(new Date().getFullYear()) - i %>">
+                                    <%= Number(new Date().getFullYear()) - i %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                </div>
+                <div class="col-md-12 mt-3">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="titledAct" value="titledAct"
+                            name="skills">
+                        <label class="custom-control-label" for="titledAct">Actualmente sigo cursando la titulacion</label>
+                    </div>
+                </div>
+                <div class="col-md-12 row">
+                    <label for="Lname" class="form-label">Fecha de finalizacion:</label>
+                    <div class="col-md-6">
+                        <select class="form-select" name="endMonth" id="endMonth">
+                            <option value="0" selected>Mes</option>
+                            <%months.forEach(month => {%>
+                            <option value="<%=month%>"><%= month %></option>
+                            <% i++ })%>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-select" name="endYear" id="endYear">
+                            <option value="0" selected>Año</option>
+                            <% for(let i = 0; i < 100; i++){ %>
+                            <option value="<%= Number(new Date().getFullYear()) - i %>">
+                                <%= Number(new Date().getFullYear()) - i %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn text-primary col-md-12 text-center">
+                    <i class="far fa-plus"></i> Añadir formacion profesional
+                </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalAcademicalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <!--<div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Añadir formacion profesional</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>-->
+                    <div class="modal-body">
+                        <form action="/defineAcademicalForm/redirectTo=<%= req.originalUrl.replaceAll('/', '*') %>" class="row g-3" method="POST" id="form5">
+                            <div class="col-md-12 ">
+                                <label for="titles" class="form-label">Titulo obtenido:</label>
+                                <select class="form-select" name="titles2" id="titles2">
+                                    <option value="Bachiller">Bachiller</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-12 ">
+                                <label for="titledIn" class="form-label">Escuela:</label>
+                                <input type="text" class="form-control" id="place2"
+                                    placeholder="Introduzca el lugar donde se titulo" name="place2">
+                            </div>
+                            <div class="col-md-12 row mt-3">
+                                <label for="Lname" class="form-label">Fecha de inicio:</label>
+                                <div class="col-md-6">
+                                    <select class="form-select" name="beginMonth2" id="beginMonth2">
+                                        <option value="0" selected>Mes</option>
+                                        <%months.forEach(month => {%>
+                                        <option value="<%=month%>"><%= month %></option>
+                                        <% i++ })%>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-select" name="beginYear2" id="beginYear2">
+                                        <option value="0" selected>Año</option>
+                                        <% for(let i = 0; i < 100; i++){ %>
+                                        <option value="<%= Number(new Date().getFullYear()) - i %>">
+                                            <%= Number(new Date().getFullYear()) - i %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 row">
+                                <label for="Lname" class="form-label">Fecha de finalizacion:</label>
+                                <div class="col-md-6">
+                                    <select class="form-select" name="endMonth2" id="endMonth2">
+                                        <option value="0" selected>Mes</option>
+                                        <%months.forEach(month => {%>
+                                        <option value="<%=month%>"><%= month %></option>
+                                        <% i++ })%>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-select" name="endYear2" id="endYear2">
+                                        <option value="0" selected>Año</option>
+                                        <% for(let i = 0; i < 100; i++){ %>
+                                        <option value="<%= Number(new Date().getFullYear()) - i %>">
+                                            <%= Number(new Date().getFullYear()) - i %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <button class="btn text-primary col-md-12 text-center">
+                                <i class="far fa-plus"></i> Añadir formacion academica
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+</div>
+<div class="modal fade" id="modalComplementaryForm" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <!--<div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Añadir formacion profesional</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>-->
+                    <div class="modal-body">
+                        <form action="/defineComplementaryForm/redirectTo=<%= req.originalUrl.replaceAll('/', '*') %>" class="row g-3" method="POST" id="form6">
+                            <div class="col-md-6 ">
+                                <label for="titles" class="form-label">Tipo de formacion:</label>
+                                <select class="form-select" name="formType" id="formType">
+                                    <option value="0" selected>Tipo de formacion...</option>
+                                    <option value="Curso">Curso</option>
+                                    <option value="Diplomado">Diplomado</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 ">
+                                <label for="titledIn" class="form-label">Formacion hecha en:</label>
+                                <input type="text" class="form-control" id="formedIn"
+                                    placeholder="Introduzca el nombre del curso o diplomado" name="formedIn">
+                            </div>
+                            <div class="col-md-12 ">
+                                <label for="titledIn" class="form-label">Institucion:</label>
+                                <input type="text" class="form-control" id="place3"
+                                    placeholder="Introduzca el lugar donde se formo" name="place3">
+                            </div>
+                            <div class="col-md-12 row mt-3">
+                                <label for="Lname" class="form-label">Fecha de inicio:</label>
+                                <div class="col-md-6">
+                                    <select class="form-select" name="beginMonth3" id="beginMonth3">
+                                        <option value="0" selected>Mes</option>
+                                        <%months.forEach(month => {%>
+                                        <option value="<%=month%>"><%= month %></option>
+                                        <% i++ })%>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-select" name="beginYear3" id="beginYear3">
+                                        <option value="0" selected>Año</option>
+                                        <% for(let i = 0; i < 100; i++){ %>
+                                        <option value="<%= Number(new Date().getFullYear()) - i %>">
+                                            <%= Number(new Date().getFullYear()) - i %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 mt-3">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="titledAct2"
+                                        value="titledAct2" name="skills">
+                                    <label class="custom-control-label" for="titledAct2">Actualmente sigo cursando la
+                                        formacion</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 row">
+                                <label for="Lname" class="form-label">Fecha de finalizacion:</label>
+                                <div class="col-md-6">
+                                    <select class="form-select" name="endMonth3" id="endMonth3">
+                                        <option value="0" selected>Mes</option>
+                                        <%months.forEach(month => {%>
+                                        <option value="<%=month%>"><%= month %></option>
+                                        <% i++ })%>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-select" name="endYear3" id="endYear3">
+                                        <option value="0" selected>Año</option>
+                                        <% for(let i = 0; i < 100; i++){ %>
+                                        <option value="<%= Number(new Date().getFullYear()) - i %>">
+                                            <%= Number(new Date().getFullYear()) - i %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <button class="btn text-primary col-md-12 text-center">
+                                <i class="far fa-plus"></i> Añadir formacion complementaria
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+</div>
+<div class="modal fade" id="modalLabExpForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <!--<div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Añadir formacion profesional</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>-->
+                    <div class="modal-body">
+                        <form action="/defineLaboralExperience/redirectTo=<%= req.originalUrl.replaceAll('/', '*') %>" class="row g-3" method="POST" id="form7">
+
+                            <div class="col-md-12 ">
+                                <label for="employName" class="form-label">Nombre del puesto:</label>
+                                <input type="text" class="form-control" id="employName"
+                                    placeholder="Introduzca el nombre del puesto que ocupo" name="employName">
+                            </div>
+                            <div class="col-md-12 ">
+                                <label for="enterpriseName" class="form-label">Nombre de la empresa:</label>
+                                <input type="text" class="form-control" id="enterpriseName"
+                                    placeholder="Introduzca el nombre de la empresa" name="enterpriseName">
+                            </div>
+                            <div class="col-md-12 row mt-3">
+                                <label for="" class="form-label">Fecha de inicio:</label>
+                                <div class="col-md-6">
+                                    <select class="form-select" name="beginMonth4" id="beginMonth4">
+                                        <option value="0" selected>Mes</option>
+                                        <%months.forEach(month => {%>
+                                        <option value="<%=month%>"><%= month %></option>
+                                        <% i++ })%>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-select" name="beginYear4" id="beginYear4">
+                                        <option value="0" selected>Año</option>
+                                        <% for(let i = 0; i < 100; i++){ %>
+                                        <option value="<%= Number(new Date().getFullYear()) - i %>">
+                                            <%= Number(new Date().getFullYear()) - i %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 mt-3">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="titledAct3">
+                                    <label class="custom-control-label" for="titledAct3">Todavia sigo laborando en la
+                                        empresa:</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 row">
+                                <label for="Lname" class="form-label">Fecha de finalizacion:</label>
+                                <div class="col-md-6">
+                                    <select class="form-select" name="endMonth4" id="endMonth4">
+                                        <option value="0" selected>Mes</option>
+                                        <%months.forEach(month => {%>
+                                        <option value="<%=month%>"><%= month %></option>
+                                        <% i++ })%>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-select" name="endYear4" id="endYear4">
+                                        <option value="0" selected>Año</option>
+                                        <% for(let i = 0; i < 100; i++){ %>
+                                        <option value="<%= Number(new Date().getFullYear()) - i %>">
+                                            <%= Number(new Date().getFullYear()) - i %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 mt-3">
+                                <label for="desc" class="form-label">Describa su funcion y sus logros en este
+                                    empleo</label>
+                                <textarea name="desc" class="form-control" id="editor2"></textarea>
+                            </div>
+                            <button class="btn text-primary col-md-12 text-center">
+                                <i class="far fa-plus"></i> Añadir experiencia laboral
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+</div>
+<%- include("template/footer")%>
+<script type="text/javascript">
+    $('#presentationContainer').empty();
+    $('#presentationContainer').append("<%-candidateData.Presentacion%>");
+    "<%var i = 0%>"
+    "<%candidateData3.forEach(data => {%>"
+    $('#descriptionContainer<%=i%>').empty();
+    $('#descriptionContainer<%=i%>').append("<%-data.Descripcion%>");
+    "<%i++})%>"
+</script>
+<script src="/JS/myProfileController.js" type="text/javascript"></script>

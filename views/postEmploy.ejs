@@ -1,0 +1,293 @@
+<%- include("template/cabecera", {tituloWeb: 'Publicar o Editar Empleo'}) %>
+
+<div class="container pt-5 pb-5">
+  <form class="row g-3" id="formPostJob" action="<%= Action %>" method="<%= Method %>">
+    <div class="col-md-12 mb-3">
+      <label for="compania" class="form-label">Puesto a ocupar:</label>
+      <input type="text" class="form-control" name="employName" id="employName">
+      <div class="invalid-tooltip">
+        error message
+      </div>
+    </div>
+    <div class="col-md-12 mb-3">
+      <%
+            var categorias = ["Administracion", "Atencion al cliente", "Hoteleria y Turismo", "Informatica", 
+            "Ingenieria en sistemas y TI", "Ingenieria (en general)"]
+            %>
+      <label for="tipoTrabajo" class="form-label">Categoria:</label>
+      <select id="Categoria" name="Categoria" class="form-select">
+        <option value="0" selected>Seleccione la categoria del empleo...</option>
+        <%categorias.forEach(categoria => {%>
+          <option value="<%= categoria %>"><%= categoria %></option>
+      <%})%>
+      </select>
+      <div class="invalid-tooltip">
+        error message
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <label for="tipoTrabajo" class="form-label">Tipo de trabajo:</label>
+      <select id="tipoTrabajo" name="tipoTrabajo" class="form-select">
+        <option value="0" selected>Seleccione el Tipo de Empleo...</option>
+        <option>Full-Time</option>
+        <option>Part-Time</option>
+      </select>
+      <div class="invalid-tooltip">
+        error message
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <label for="tipoTrabajo" class="form-label">Tanda:</label>
+      <select id="tanda" name="tanda" class="form-select">
+        <option value="0" selected>Seleccione la Tanda del Empleo...</option>
+        <option>Matutina</option>
+        <option>Verpertina</option>
+        <option>Nocturna</option>
+        <option>Matutina-Verpertina</option>
+        <option>Verpertina-Nocturna</option>
+      </select>
+      <div class="invalid-tooltip">
+        error message
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <label for="tipoTrabajo" class="form-label">Modalidad:</label>
+      <select id="Modalidad" name="Modalidad" class="form-select">
+        <option value="0" selected>Seleccione la Modalidad del Empleo...</option>
+        <option>Presencial</option>
+        <option>Semi-presencial</option>
+        <option>Remota</option>
+      </select>
+      <div class="invalid-tooltip">
+        error message
+      </div>
+    </div>
+    <div class="col-md-12 mb-3">
+      <label for="Descripcion">Descripción:</label>
+      <textarea class="form-control" id="Descripcion" name="Descripcion" rows="6"
+        placeholder="Describa el empleo."></textarea>
+      <div class="invalid-tooltip">
+        error message
+      </div>
+    </div>
+    <div class="col-md-12 mb-3">
+      <label for="Descripcion2">Requisitos para aplicar:</label>
+      <textarea class="form-control" id="Requisitos" name="requisitos" rows="6"
+        placeholder="Escriba todos los requisitos para aplicar al empleo"></textarea>
+      <div class="invalid-tooltip">
+        error message
+      </div>
+    </div>
+    <div class="col-md-12 mb-3">
+      <label for="Descripcion2">Beneficios:</label>
+      <textarea class="form-control" id="Benefit" name="benefit" rows="6"
+        placeholder="Escriba los beneficios del empleo"></textarea>
+      <div class="invalid-tooltip">
+        error message
+      </div>
+    </div>
+
+    <button type="button" id="btnSend" class="btn btn-primary"><i
+        class="fal fa-share-square"></i>  <%= Name %></button>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Confirmar datos:</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Puesto a ocupar:</label>
+                <input type="text" class="form-control" id="employName2" readonly>
+              </div>
+              <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Categoria:</label>
+                <input type="text" class="form-control" id="Categoria2" readonly>
+              </div>
+              <div class="form-group">
+                <label for="message-text" class="col-form-label">Tipo de trabajo:</label>
+                <input type="text" class="form-control" id="tipoTrabajo2" readonly>
+              </div>
+              <div class="form-group">
+                <label for="message-text" class="col-form-label">Tanda:</label>
+                <input type="text" class="form-control" id="tanda2" readonly>
+              </div>
+              <div class="form-group">
+                <label for="message-text" class="col-form-label">Modalidad:</label>
+                <input type="text" class="form-control" id="modalidad2" readonly>
+              </div>
+              <div class="form-group">
+                <label for="message-text" class="col-form-label">Descripcion:</label>
+                <textarea type="text" class="form-control" id="Descripcion2" rows="6" readonly></textarea>
+              </div>
+              <div class="form-group">
+                <label for="message-text" class="col-form-label">Requisitos para aplicar:</label>
+                <textarea type="text" class="form-control" id="Requisitos2" rows="6" readonly></textarea>
+              </div>
+              <div class="form-group">
+                <label for="Descripcion2">Beneficios:</label>
+                <textarea class="form-control" id="Benefit2" rows="6" readonly></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary"><i class="fal fa-share-square <%= icon1 %>"></i><i
+                class="fal fa-edit fa <%= icon2 %>"></i>  <%= Name %></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<script type="text/javascript">
+
+const form = document.getElementById("formPostJob");
+const btnSend = document.getElementById("btnSend");
+
+const employName = document.getElementById("employName");
+const Categoria = document.getElementById("Categoria");
+const tipoTrabajo = document.getElementById("tipoTrabajo");
+const tanda = document.getElementById("tanda");
+const modalidad = document.getElementById("Modalidad");
+const Descripcion = document.getElementById("Descripcion");
+const Requisitos = document.getElementById("Requisitos");
+const Benefit = document.getElementById("Benefit");
+
+const employName2 = document.getElementById("employName2");
+const Categoria2 = document.getElementById("Categoria2");
+const tipoTrabajo2 = document.getElementById("tipoTrabajo2");
+const tanda2 = document.getElementById("tanda2");
+const modalidad2 = document.getElementById("modalidad2");
+const Descripcion2 = document.getElementById("Descripcion2");
+const Requisitos2 = document.getElementById("Requisitos2");
+const Benefit2 = document.getElementById("Benefit2");
+
+
+btnSend.addEventListener("click", () => {
+  checkInputs(); // validar inputs
+  for (let i = 0; i < form.length; i++) {
+    //recorro el form2ulario
+    const element = form[i].className; //obtengo el nombre de las clases de los componentes del form2 iterado
+    if (
+      element === "form-control is-valid" ||
+      element === "form-select is-valid"
+    ) {
+      if (i == 7) {
+        $("#exampleModal").modal("show");
+        employName2.value = employName.value;
+        Categoria2.value = Categoria.value;
+        tipoTrabajo2.value = tipoTrabajo.value;
+        tanda2.value = tanda.value;
+        modalidad2.value = modalidad.value;
+        Descripcion2.value = Descripcion.value;
+        Requisitos2.value = Requisitos.value;
+        Benefit2.value = Benefit.value;
+        break;
+      } //si llega a 7 es porque todos los componentes del form2 estan validados por lo tanto se reanuda la accion del form2
+    } else {
+      break;
+    } // de lo contrario simplemente corto el bucle
+  }
+});
+
+
+function checkInputs() {
+  //funcion para validar inputs
+  // variables que contienen los valores de los elementos del DOM
+  // trim es para obviar los espacios en blanco
+
+  const employNameValue = employName.value;
+  const CategoriaValue = Categoria.value;
+  const tipoTrabajoValue = tipoTrabajo.value;
+  const tandaValue = tanda.value;
+  const modalidadValue = modalidad.value;
+  const DescripcionValue = Descripcion.value;
+  const RequisitosValue = Requisitos.value;
+  const BenefitValue = Benefit.value;
+
+  // comienza la validacion
+  if (employNameValue === "") {
+    setErrorFor(employName, "Debe proporcionar el puesto a ocupar.");
+  } else {
+    setSuccessFor(employName);
+  }
+
+  if (CategoriaValue === "0") {
+    setErrorFor(Categoria, "Seleccione una categoria.");
+  } else {
+    setSuccessFor(Categoria);
+  }
+
+  if (tipoTrabajoValue === "0") {
+    setErrorFor(tipoTrabajo, "Seleccione el tipo de empleo.");
+  } else {
+    setSuccessFor(tipoTrabajo);
+  }
+
+  if (tandaValue === "0") {
+    setErrorFor(tanda, "Seleccione la tanda del empleo.");
+  } else {
+    setSuccessFor(tanda);
+  }
+
+  if (modalidadValue === "0") {
+    setErrorFor(modalidad, "Seleccione la modalidad del empleo.");
+  } else {
+    setSuccessFor(modalidad);
+  }
+
+  if (DescripcionValue === "") {
+    setErrorFor(Descripcion, "Debe proporcionar una descripcion del empleo.");
+  } else {
+    setSuccessFor(Descripcion);
+  }
+
+  if (RequisitosValue === "") {
+    setErrorFor(Requisitos, "Debe proporcionar los requisitos del empleo.");
+  } else {
+    setSuccessFor(Requisitos);
+  }
+
+  if (BenefitValue === "") {
+    setErrorFor(Benefit, "Debe proporcionar los beneficios del empleo.");
+  } else {
+    setSuccessFor(Benefit);
+  }
+  //termina la validacion
+}
+// funcion para cuando no este validado un elemento
+// Recibe dos parametros: el elemento no validado y un mensaje de error
+function setErrorFor(input, message) {
+  if (input.className != "form-select") {
+    //para los form2-control
+    const form2Control = input.parentElement; // le asigna el valor de los elementos parentados al elemento
+    const div = form2Control.querySelector("div"); // filtra los valores a solo los div
+    input.className = "form-control is-invalid "; // le asigna una clase de Bootstrap para un elemento no validado
+    div.innerText = message; // pone el parametro message al div que indica el error
+  } else {
+    //para los form2-control lo mismo que los valores de arriba
+    const form2Control = input.parentElement;
+    const div = form2Control.querySelector("div");
+    input.className = "form-select is-invalid ";
+    div.innerText = message;
+  }
+}
+// funcion para cuando este validado un elemento
+// Recibe un parametros: el elemento validado
+function setSuccessFor(input) {
+  if (input.className != "form-select") {
+    input.className = "form-control is-valid"; // le asigna la clase de Bootstrap al elemento validado
+  } else {
+    input.className = "form-select is-valid"; // le asigna la clase de Bootstrap al elemento select              validado
+  }
+}
+</script>
+
+<%- include("template/footer") %>
