@@ -15,8 +15,8 @@ class nodemailer{
       port: 465,
       secure: true, 
       auth: {
-        user: 'jsjeremy4@gmail.com', 
-        pass: 'slhgygzynjwxgaes'
+        user: 'user', 
+        pass: 'pass'
       },
     });
     return this;
