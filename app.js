@@ -3,8 +3,8 @@ const app = express();
 const passport = require('passport');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const fileUpload = require('express-fileupload')
-const port = process.env.PORT || 4000;
+const fileUpload = require('express-fileupload');
+const port = process.env.PORT || 3000;
 
 //Middleworks
 app.use(express.urlencoded({extended: true}));
@@ -32,10 +32,10 @@ app.set('views', __dirname + '/views');
 app.use(express.static("public"));
 
 //routes
-app.use('/', require('./server/routerNode/routerGetter'));
-app.use('/', require('./server/routerNode/routerPoster'));
-app.use('/', require('./server/routerNode/routerPut'));
-app.use('/', require('./server/routerNode/routerDeleter'));
+app.use(require('./server/routerNode/routerGetter'));
+app.use(require('./server/routerNode/routerPoster'));
+app.use(require('./server/routerNode/routerPut'));
+app.use(require('./server/routerNode/routerDeleter'));
 app.use((rep, res, next) => {
         res.status(404).render("404");
     })
