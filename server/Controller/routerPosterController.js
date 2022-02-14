@@ -3,7 +3,7 @@ const { response } = require("express");
 const passport = require("passport");
 require("../JSNode/passport")(passport);
 const restler = require('restler');
-const host = 'http://localhost:3000'
+const host = 'https://empleoland-restapi.herokuapp.com/'
 let multiUso = "";
 let multiUso2 = "";
 let date = "";
