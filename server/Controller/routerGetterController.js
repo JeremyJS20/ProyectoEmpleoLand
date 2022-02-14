@@ -1,7 +1,7 @@
 //Controladores routerGetter
 const jwt = require("jsonwebtoken"); //token para los correos
 const restler = require('restler');
-const host = 'https://empleoland-restapi.herokuapp.com/';
+const host = 'https://empleoland-restapi.herokuapp.com';
 let multiUso = "";
 
 exports.welcomePage = async (req, res) => {
