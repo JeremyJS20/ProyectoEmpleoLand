@@ -4,7 +4,7 @@ const passport = require('passport');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload')
-const port = process.env.port || 4000;
+const port = process.env.PORT || 4000;
 
 //Middleworks
 app.use(express.urlencoded({extended: true}));
