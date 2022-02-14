@@ -4,6 +4,10 @@ const express = require('express');
 const routerGC = require('../Controllers/routerGetterController');
 const router = express.Router();
 
+router.get('/api', (req, res) => {
+  res.send('Working')
+});
+
 router.get('/Employs', routerGC.getEmploysData);
 
 router.get('/EmployCategories', routerGC.getEmployCategories);
